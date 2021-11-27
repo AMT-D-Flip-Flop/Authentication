@@ -32,6 +32,10 @@ public class ProductSelectionService {
         return selection.orElse(null);
     }
 
+    public void delete(ProductSelection selection) {
+        productSelectionRepository.delete(selection);
+    }
+
     // should we make it return void ?
     public Boolean insert(ProductSelection selection){
         productSelectionRepository.save(selection);
@@ -48,7 +52,7 @@ public class ProductSelectionService {
         return productSelectionRepository.count();
     }
 
-    public ProductSelection update(ProductSelection selection){
+    public ProductSelection save(ProductSelection selection){
         return productSelectionRepository.save(selection);
     }
 

@@ -39,6 +39,10 @@ public class Cart {
         return total;
     }
 
+    public Integer getId(){
+        return this.id;
+    }
+
     public List<ProductSelection> getSelections() {
         return this.selections;
     }
