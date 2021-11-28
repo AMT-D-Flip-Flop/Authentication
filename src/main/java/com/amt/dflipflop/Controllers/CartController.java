@@ -3,9 +3,6 @@ package com.amt.dflipflop.Controllers;
 import com.amt.dflipflop.Entities.Cart;
 import com.amt.dflipflop.Entities.ItemCart;
 import com.amt.dflipflop.Entities.Product;
-import com.amt.dflipflop.Services.CartService;
-import com.amt.dflipflop.Services.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +12,6 @@ import java.util.List;
 
 @Controller
 public class CartController {
-
-    @Autowired
-    private CartService cartService;
-    @Autowired
-    private ProductService productService;
 
     private boolean init = true;
     private List<ItemCart> itemCarts = new ArrayList<>();
