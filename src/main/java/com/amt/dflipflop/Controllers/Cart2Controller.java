@@ -1,6 +1,6 @@
 package com.amt.dflipflop.Controllers;
 
-import com.amt.dflipflop.Entities.Cart;
+import com.amt.dflipflop.Entities.Cart2;
 import com.amt.dflipflop.Entities.ItemCart;
 import com.amt.dflipflop.Entities.Product;
 import org.springframework.stereotype.Controller;
@@ -11,18 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class CartController {
+public class Cart2Controller {
 
     private boolean init = true;
     private List<ItemCart> itemCarts = new ArrayList<>();
 
 
-    @GetMapping("/cart")
+    @GetMapping("/cart2")
     public String getCart(Model model) {
         if(!init){
             itemCarts.clear();
             init = true;
-            Cart cart = new Cart();
+            Cart2 cart = new Cart2();
             Product product1 = new Product("Produit 1", "Super produit 1", 3.5f, "shoes-img3.png");
             Product product2 = new Product("Produit 2", "Super produit 2", 6.5f, "shoes-img9.png");
             Product product3 = new Product("Produit 3", "Super produit 3", 9.5f, "shoes-img4.png");
@@ -39,34 +39,34 @@ public class CartController {
             total += (ic.getQty() * ic.getProduct().getPrice());
         model.addAttribute("itemCarts", itemCarts);
         model.addAttribute("total", total);
-        return "cart";
+        return "cart2";
     }
 
-    @PostMapping("/cart/change/{id}")
+    @PostMapping("/cart2/change/{id}")
     public String addQty(@ModelAttribute ("itemCart") ItemCart itemCart, @PathVariable("id") int index) {
         if(itemCart.getQty() > 0){
             itemCarts.get(index).setQty(itemCart.getQty());
         } else {
             itemCarts.remove(index);
         }
-        return "redirect:/cart";
+        return "redirect:/cart2";
     }
 
-    @PostMapping("/cart/empty")
+    @PostMapping("/cart2/empty")
     public String empty() {
         itemCarts.clear();
-        return "redirect:/cart";
+        return "redirect:/cart2";
     }
 
-    @PostMapping("/cart/init")
+    @PostMapping("/cart2/init")
     public String init() {
         init = false;
-        return "redirect:/cart";
+        return "redirect:/cart2";
     }
 
-    @PostMapping("/cart/delete/{id}")
+    @PostMapping("/cart2/delete/{id}")
     public String deleteItem(@PathVariable("id") int index) {
         itemCarts.remove(index);
-        return "redirect:/cart";
+        return "redirect:/cart2";
     }
 }

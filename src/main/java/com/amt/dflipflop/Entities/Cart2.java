@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Cart {
+public class Cart2 {
 
     // needed for SpringBoot Hibernate to create objects
-    public Cart() {}
+    public Cart2() {}
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)

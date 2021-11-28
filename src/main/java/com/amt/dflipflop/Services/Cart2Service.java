@@ -1,41 +1,39 @@
 package com.amt.dflipflop.Services;
 
-import com.amt.dflipflop.Entities.Cart;
-import com.amt.dflipflop.Entities.Product;
-import com.amt.dflipflop.Repositories.CartRepository;
+import com.amt.dflipflop.Entities.Cart2;
+import com.amt.dflipflop.Repositories.Cart2Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CartService {
+public class Cart2Service {
 
     @Autowired
-    private CartRepository cartRepository;
+    private Cart2Repository cartRepository;
 
     @Autowired
     private ProductService productService;
 
-    public ArrayList<Cart> getAll() {
+    public ArrayList<Cart2> getAll() {
 
-        Iterable<Cart> it = cartRepository.findAll();
+        Iterable<Cart2> it = cartRepository.findAll();
 
-        ArrayList<Cart> carts = new ArrayList<>();
+        ArrayList<Cart2> carts = new ArrayList<>();
         it.forEach(carts::add);
 
         return carts;
     }
 
-    public Cart get(Integer id) {
-        Optional<Cart> cart = cartRepository.findById(id);
+    public Cart2 get(Integer id) {
+        Optional<Cart2> cart = cartRepository.findById(id);
         return cart.orElse(null);
     }
 
     // should we make it return void ?
-    public Cart insert(Cart cart){
+    public Cart2 insert(Cart2 cart){
         return cartRepository.save(cart);
     }
 
@@ -43,7 +41,7 @@ public class CartService {
         return cartRepository.count();
     }
 
-    public Cart update(Cart cart){
+    public Cart2 update(Cart2 cart){
         return cartRepository.save(cart);
     }
 
