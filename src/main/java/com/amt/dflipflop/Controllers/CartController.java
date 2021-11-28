@@ -22,7 +22,9 @@ public class CartController {
     private ProductService productService;
 
     private boolean init = false;
+    private Integer i = 0;
     private List<ItemCart> itemCarts = new ArrayList<>();
+
 
     @GetMapping("/cart")
     public String getCart(Model model) {
@@ -40,6 +42,8 @@ public class CartController {
             cart.addProduct(item2);
             cart.addProduct(item3);
             itemCarts = cart.getItemsCart();
+        } else {
+            ++i;
         }
         double total = 0;
         for(ItemCart ic : itemCarts)
@@ -49,9 +53,21 @@ public class CartController {
         return "cart";
     }
 
-    @PostMapping("/cart/add")
-    public String addQty(@ModelAttribute(value="itemCart") ItemCart itemCart) {
-        itemCart.setId(itemCart.getQty() + 1);
+    @PostMapping("/cart/change")
+    public String addQty(@ModelAttribute ("itemCart") ItemCart itemCart) {
+        System.out.println(itemCart.getQty());
+        return "redirect:/cart";
+    }
+
+    @PostMapping("/cart/empty")
+    public String empty() {
+        itemCarts.clear();
+        return "redirect:/cart";
+    }
+
+    @PostMapping("/cart/delete/{id}")
+    public String deleteItem(@PathVariable("id") int index) {
+        itemCarts.remove(index);
         return "redirect:/cart";
     }
 }

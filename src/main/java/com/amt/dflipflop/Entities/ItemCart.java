@@ -38,7 +38,7 @@ public class ItemCart {
         return qty;
     }
     public void setQty(Integer qty){
-        qty += 1;
+        this.qty = qty;
     }
 
 }

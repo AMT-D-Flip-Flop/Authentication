@@ -9,40 +9,48 @@
 <div class="collection_text">Shopping Cart</div>
 <div class="collection_section layout_padding">
     <div class="container">
-        <h1 class="new_text"><strong>Products in ya Shopping Cart</strong></h1>
+        <h1 class="new_text"><strong>Products in da Shopping Cart</strong></h1>
     </div>
 </div>
 
-<form action="/cart" method="get">
-    <table>
+<span th:if="${itemCarts.empty == false}">
+     <table>
         <tr>
             <th>Image</th>
             <th>Product</th>
             <th>Price</th>
             <th>Quantity</th>
             <th>Sun total</th>
-            <th>ADD</th>
-            <th>SUB</th>
+            <th>Changer</th>
+            <th>Supprimer</th>
         </tr>
-        <tr th:each="itemCart: ${itemCarts}">
-
-            <td th:text="${itemCart.product.imageName}" />
-            <td th:text="${itemCart.product.name}" />
-            <td th:text="${itemCart.product.price}" />
-            <td th:text="${itemCart.qty}" />
-            <td th:text="${itemCart.qty * itemCart.product.price}" />
-            <td>
-                <button type="submit"  > + </button>
-            </td>
+        <tr th:each="itemCart, intr: ${itemCarts}">
+            <td th:text="${itemCart.product.imageName}"/>
+            <td th:text="${itemCart.product.name}"/>
+            <td th:text="${itemCart.product.price}"/>
+            <form method="POST" th:action="@{/cart/change}" th:object="${itemCart} " enctype="multipart/form-data">
+            <td> <input type="number" id="quantity" name="quantity" min="0" max="20" th:value="*{qty}" >  </td>
+            <td th:text="${itemCart.qty * itemCart.product.price}"/>
+            <td> <button type="submit" class="btn btn-primary"> Changer </button> </td>
+            </form>
+            <form method="POST" th:action="@{'/cart/delete/' + ${intr.index}}" enctype="multipart/form-data">
+            <td> <button type="submit" class="btn btn-primary"> Delete </button> </td>
+            </form>
         </tr>
     </table>
     <table>
         <tr>
             <th>Total</th>
-            <td th:text="${total}" />
+            <td th:text="${total}"/>
+        </tr>
+                <tr>
+            <form method="POST" th:action="@{/cart/empty}">
+                <button type="submit" class="btn btn-primary"> VIDER </button>
+                </form>
         </tr>
     </table>
-</form>
+</span>
+<span th:if="${itemCarts.empty == true}">Le panier est vide</span>
 
 
 <!-- content end -->
