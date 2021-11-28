@@ -18,8 +18,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.*;
 
+
 @Entity
 public class User {
+
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
@@ -28,10 +30,25 @@ public class User {
 
     private String email;
 
+
     private String firstName;
 
     private String lastName;
 
+    private String token;
+    private String role;
+    private String password;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+
+    //Role
     public String getRole() {
         return role;
     }
@@ -40,8 +57,7 @@ public class User {
         this.role = role;
     }
 
-    private String role;
-
+    //firstname
     public String getFirstName() {
         return firstName;
     }
@@ -50,6 +66,8 @@ public class User {
         this.firstName = firstName;
     }
 
+
+    //lastname
     public String getLastName() {
         return lastName;
     }
@@ -59,7 +77,7 @@ public class User {
     }
 
 
-
+    //password
     public String getPassword() {
         return password;
     }
@@ -68,8 +86,8 @@ public class User {
         this.password = password;
     }
 
-    private String password;
 
+    //ID
     public Long getId() {
         return id;
     }
@@ -78,6 +96,7 @@ public class User {
         this.id = id;
     }
 
+    //username
     public String getUsername() {
         return username;
     }
@@ -86,6 +105,8 @@ public class User {
         this.username = name;
     }
 
+
+    //Email
     public String getEmail() {
         return email;
     }

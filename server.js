@@ -48,6 +48,7 @@ app.get('/', (req, res) => {
 app.post('/auth/login', jsonParser, function (
     req, res) {
     token = ""
+
     if(req.body.username === "test" && req.body.password === "test" ){
         token = {
             "token": "string",
@@ -57,10 +58,12 @@ app.post('/auth/login', jsonParser, function (
                 "role": "string"
             }
         }
+        console.log("succs", token)
     }else{
         token = {
             "error": "string"
         }
+        console.log("succs", token)
     }
     res.json(token)
 })

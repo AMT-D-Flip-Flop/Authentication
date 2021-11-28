@@ -14,15 +14,18 @@ import java.util.stream.Collectors;
  * Utility Class for common Java Web Token operations
  *
  * Created by Mary Ellen Bowman
+ *
+ * Other sources : https://www.toptal.com/java/rest-security-with-jwt-spring-security-and-java
  */
 @Component
 public class JwtProvider{
 
-    private final String ROLES_KEY = "roles";
+    //Define the json string in jwt
+    private final String ROLES_KEY = "role";
 
     private JwtParser parser;
 
-    private String secretKey;
+    private String secretKey = "test";
     private long validityInMilliseconds;
 
     @Autowired
