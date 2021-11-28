@@ -36,9 +36,7 @@ public class UserController {
     };
 
     @GetMapping("/user/orders")
-    public String getUserOrders(Model model) {
-        return "orders";
-    }
+    public String getUserOrders(Model model) { return "orders"; }
 
     @GetMapping("/user/addresses")
     public String getAddressesPage(Model model) {
