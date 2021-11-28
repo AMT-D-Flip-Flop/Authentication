@@ -1,6 +1,7 @@
 package com.amt.dflipflop.Controllers;
 import com.amt.dflipflop.Entities.Category;
 import com.amt.dflipflop.Entities.Product;
+import com.amt.dflipflop.Entities.ProductSelection;
 import com.amt.dflipflop.Services.CategoryService;
 import com.amt.dflipflop.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
