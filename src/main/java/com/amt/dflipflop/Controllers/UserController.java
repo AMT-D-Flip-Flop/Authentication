@@ -1,8 +1,8 @@
 package com.amt.dflipflop.Controllers;
 
-import com.amt.dflipflop.Entities.CustomAuthenticationProvider;
-import com.amt.dflipflop.Entities.CustomUserDetailsService;
-import com.amt.dflipflop.Entities.User;
+import com.amt.dflipflop.Entities.authentification.CustomAuthenticationProvider;
+import com.amt.dflipflop.Services.CustomUserDetailsService;
+import com.amt.dflipflop.Entities.authentification.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -2,7 +2,7 @@ package security;
 
 
 
-import com.amt.dflipflop.Entities.CustomUserDetailsService;
+import com.amt.dflipflop.Services.CustomUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;

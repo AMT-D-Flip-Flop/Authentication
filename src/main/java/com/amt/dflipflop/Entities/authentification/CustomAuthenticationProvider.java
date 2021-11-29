@@ -1,4 +1,4 @@
-package com.amt.dflipflop.Entities;
+package com.amt.dflipflop.Entities.authentification;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

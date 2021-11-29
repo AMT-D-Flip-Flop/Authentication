@@ -1,4 +1,4 @@
-package com.amt.dflipflop.Entities;
+package com.amt.dflipflop.Entities.authentification;
 
 import javax.persistence.Id;
 import java.io.Serializable;

@@ -9,10 +9,6 @@
  */
 
 package com.amt.dflipflop.Repositories;
-import com.amt.dflipflop.Entities.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 
 /*
 Source : https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tutorial

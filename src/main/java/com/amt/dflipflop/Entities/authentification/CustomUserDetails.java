@@ -9,7 +9,7 @@
  */
 
 
-package com.amt.dflipflop.Entities;
+package com.amt.dflipflop.Entities.authentification;
 
 /*
 Source : https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tutorial

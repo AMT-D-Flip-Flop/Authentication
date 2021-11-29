@@ -1,19 +1,16 @@
-package com.amt.dflipflop.Entities;
+package com.amt.dflipflop.Services;
 
+import com.amt.dflipflop.Entities.authentification.User;
+import com.amt.dflipflop.Entities.authentification.UserJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.client.RestTemplate;
 import security.JwtProvider;
 
-import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.Optional;
 

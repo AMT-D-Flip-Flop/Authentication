@@ -8,7 +8,7 @@
  * https://www.baeldung.com/spring-boot-testresttemplate
  */
 
-package com.amt.dflipflop.Entities;
+package com.amt.dflipflop.Entities.authentification;
 
 import org.hibernate.annotations.Table;
 
