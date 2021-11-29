@@ -31,12 +31,11 @@ public class CartController {
      */
     @GetMapping("/cart")
     public String displayCart(Model model) {
-        Cart cart = cartService.getAll().get(0);
-        // Create a new cart if we don't have any
-        if(cart == null){
-            cart = new Cart();
-            cartService.save(cart);
+        if(cartService.getAll().size() == 0){
+            Cart newcart = new Cart();
+            cartService.save(newcart);
         }
+        Cart cart = cartService.getAll().get(0);
         model.addAttribute("cart", cart);
         return "cart";
     }
@@ -64,11 +63,18 @@ public class CartController {
      */
     @PostMapping(path="/cart")
     public String saveCart (@ModelAttribute Cart cart) throws IOException {
+
         Cart userCart = cartService.getAll().get(0);
         Integer index = 0;
         for (ProductSelection sel: userCart.getSelections()){
-            sel.setQuantity(cart.getSelections().get(index).getQuantity());
-            index++;
+            if(cart.getSelections().get(index).getQuantity() == 0){
+                selectionService.delete(sel);
+            }
+            else{
+                sel.setQuantity(cart.getSelections().get(index).getQuantity());
+                index++;
+            }
+
             selectionService.save(sel);
         }
         return "redirect:/cart";
