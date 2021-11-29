@@ -26,7 +26,7 @@
             </form>
         </div>
         <div class="presentation_text" th:text="${product.getDescription()}"></div><br/>
-        <div class="presentation_text" th:text="' (' + ${product.getCategoryName()} + ')'"></div>
+        <div th:if="${product.getCategories().size() > 0}" class="presentation_text" th:text="' (' + ${product.getCategoriesNames()} + ')'"></div>
     </div>
 </div>
 

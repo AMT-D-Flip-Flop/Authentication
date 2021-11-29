@@ -33,7 +33,7 @@ public class CategoryService {
         ArrayList<Category> categories = new ArrayList<>();
         ArrayList<Product> products = productService.getAll();
         for(Product product : products){
-            Category cat = product.getCategory();
+            for(Category cat : product.getCategories())
             if(cat  != null && !categories.contains(cat)){
                 categories.add(cat);
             }
