@@ -64,6 +64,18 @@ public class CategoryService {
         return false;
     }
 
+    public boolean isCategoryEmpty(Integer id){
+        ArrayList<Product> products = productService.getAll();
+
+        for(Product product : products){
+            if(product.getCategoriesId().contains(id)){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public Long count() {
         return categoryRepository.count();
     }

@@ -178,5 +178,10 @@
         });
     </script>
 </div>
+<div th:fragment="message_display">
+    <br/>
+    <h1 th:if="${success}" th:text="${success}" style="color: green"></h1>
+    <h1 th:if="${error}" th:text="${'Error : ' + error}" style="color: red"></h1>
+</div>
 </body>
 </html>

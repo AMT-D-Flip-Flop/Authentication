@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 import java.nio.file.*;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import static com.amt.dflipflop.Constants.*;
 
 @Controller
 public class CategoriesController {
@@ -29,10 +32,19 @@ public class CategoriesController {
     private ProductService productService;
 
     @GetMapping("/categories")
-    public String displayCategoriesAndForm(Model model) {
+    public String displayCategoriesAndForm(Model model, RedirectAttributes redirectAttrs) {
         ArrayList<Category> categories = categoryService.getAll();
         model.addAttribute("categories", categories);
         model.addAttribute("category", new Category());
+
+
+        if(redirectAttrs.containsAttribute(SUCCESS_MSG_KEY)){
+            model.addAttribute(SUCCESS_MSG_KEY, redirectAttrs.getAttribute(SUCCESS_MSG_KEY));
+        }
+        if(redirectAttrs.containsAttribute(ERROR_MSG_KEY)){
+            model.addAttribute(ERROR_MSG_KEY, redirectAttrs.getAttribute(ERROR_MSG_KEY));
+        }
+
         return "categories";
     }
 
@@ -42,12 +54,15 @@ public class CategoriesController {
      * @throws IOException If write fail
      */
     @PostMapping(path="/categories/add-category") // Map ONLY POST Requests
-    public String addNewCategory (@ModelAttribute Category category) throws IOException {
+    public String addNewCategory (@ModelAttribute Category category, RedirectAttributes redirectAttrs) throws IOException {
 
 
         if(categoryService.categoryExists(category.getName())){
+            redirectAttrs.addFlashAttribute(ERROR_MSG_KEY, "Category already exists");
             return "redirect:/categories";
         }
+
+        redirectAttrs.addFlashAttribute(SUCCESS_MSG_KEY, "Category was added successfully");
 
         // Add the category via a category service
         categoryService.insert(category);
@@ -60,13 +75,17 @@ public class CategoriesController {
      * @throws IOException If suppress fail
      */
     @GetMapping(path="/categories/remove")
-    public String removeCategory (@RequestParam(value = "id") Integer id) throws IOException {
+    public String removeCategory (@RequestParam(value = "id") Integer id, RedirectAttributes redirectAttrs) throws IOException {
 
         // Check if any item uses this category<
+        if(!categoryService.isCategoryEmpty(id)){
+            redirectAttrs.addFlashAttribute(ERROR_MSG_KEY, "Category is not empty");
+            return "redirect:/categories";
+        }
 
         // Add the category via a category service
         categoryService.remove(id);
-
+        redirectAttrs.addFlashAttribute(SUCCESS_MSG_KEY, "Category was removed successfully");
         return "redirect:/categories";
     }
 
