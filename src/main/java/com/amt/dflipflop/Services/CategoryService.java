@@ -3,7 +3,6 @@ package com.amt.dflipflop.Services;
 import com.amt.dflipflop.Entities.Category;
 import com.amt.dflipflop.Entities.Product;
 import com.amt.dflipflop.Repositories.CategoryRepository;
-import com.amt.dflipflop.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +37,6 @@ public class CategoryService {
                 categories.add(cat);
             }
         }
-
         return categories;
     }
 

@@ -37,7 +37,6 @@ public class CategoriesController {
         model.addAttribute("categories", categories);
         model.addAttribute("category", new Category());
 
-
         if(redirectAttrs.containsAttribute(SUCCESS_MSG_KEY)){
             model.addAttribute(SUCCESS_MSG_KEY, redirectAttrs.getAttribute(SUCCESS_MSG_KEY));
         }
@@ -94,15 +93,17 @@ public class CategoriesController {
      * @return The redirection to a page
      * @throws IOException If suppress fail
      */
-    @PostMapping(path="/categories/set_category")
+    @PostMapping(path="/categories/set_categories")
     public String setCategory (
             @RequestParam(value = "product") Integer productId,
-            @RequestParam(value = "cat") List<Integer> categoriesId) throws IOException {
+            @RequestParam(value = "cat") List<Integer> categoriesId,
+            RedirectAttributes redirectAttrs) throws IOException {
 
         Product product = productService.get(productId);
 
         if (product == null)
         {
+            redirectAttrs.addFlashAttribute(ERROR_MSG_KEY, "This product doesn't exist");
             return "redirect:/store";
         }
 
@@ -117,6 +118,7 @@ public class CategoriesController {
         product.setCategories(categories);
         productService.update(product);
 
+        redirectAttrs.addFlashAttribute(SUCCESS_MSG_KEY, "Updated the product successfully");
         return "redirect:/store/product/" + productId;
     }
 
