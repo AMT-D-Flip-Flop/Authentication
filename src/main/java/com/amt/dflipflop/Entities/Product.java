@@ -63,8 +63,8 @@ public class Product {
         StringBuilder str = new StringBuilder();
 
         for(Category cat : categories){
+            str.append(" "); // supplementary space is needed in the template, so no problem here
             str.append(cat.getName());
-            str.append(" "); // supplementary space, but can't do much to fix it cleanly
         }
 
         return str.toString();
