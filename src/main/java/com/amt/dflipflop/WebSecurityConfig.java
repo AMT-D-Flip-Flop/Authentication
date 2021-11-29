@@ -15,8 +15,7 @@ import security.JwtTokenFilter;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    /*@Autowired
-    private DataSource dataSource;*/
+
 
 
     private CustomUserDetailsService userDetailsService  = new CustomUserDetailsService();
@@ -25,25 +24,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsService userDetailsService() {
         return new CustomUserDetailsService();
     }
-
-
-
-    /*
-    https://www.baeldung.com/spring-security-registration-password-encoding-bcrypt
-     */
-    /*@Bean
-   /* public DaoAuthenticationProvider authenticationProvider() {
-     /*   DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;*/
-    //}*/
-
-   /* @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
-    }*/
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

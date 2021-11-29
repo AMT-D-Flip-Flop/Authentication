@@ -13,6 +13,7 @@ package com.amt.dflipflop.Entities.authentification;
 
 /*
 Source : https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tutorial
+ represent an authentication user
  */
 
 import java.util.Collection;
@@ -35,13 +36,14 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+       return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return user.getUsername();
     }
+
 
     @Override
     public boolean isAccountNonExpired() {

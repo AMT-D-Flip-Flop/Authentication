@@ -5,9 +5,9 @@ import java.io.Serializable;
 
 class Account implements Serializable {
 
-public Account(){
+    public Account(){
 
-}
+    }
     public Account(int id, String username, String role) {
         this.id = id;
         this.username = username;
@@ -42,7 +42,6 @@ public Account(){
     private int id;
     private String username;
     private String role;
-
 
 }
 
