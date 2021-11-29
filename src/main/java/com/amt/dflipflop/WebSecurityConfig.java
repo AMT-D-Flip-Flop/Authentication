@@ -65,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // No session will be created or used by spring security
         //??DIsuc
         //http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        //http.addFilterBefore(new JwtTokenFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtTokenFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class);
     }
     @Bean
     @Override

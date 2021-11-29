@@ -25,7 +25,7 @@ public class JwtProvider{
 
     private JwtParser parser;
 
-    private String secretKey = "test";
+    private String secretKey = "secret";
     private long validityInMilliseconds;
 
     @Autowired
