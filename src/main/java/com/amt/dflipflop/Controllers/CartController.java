@@ -72,9 +72,8 @@ public class CartController {
             }
             else{
                 sel.setQuantity(cart.getSelections().get(index).getQuantity());
-                index++;
             }
-
+            index++;
             selectionService.save(sel);
         }
         return "redirect:/cart";
