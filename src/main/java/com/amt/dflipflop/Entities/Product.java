@@ -1,6 +1,7 @@
 package com.amt.dflipflop.Entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class Product {
@@ -25,6 +26,9 @@ public class Product {
 
     @OneToOne
     private Category category;
+
+    @OneToMany
+    private List<Category> categories;
 
     private Float price;
 
@@ -60,6 +64,11 @@ public class Product {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    public List<Category> getCategories() { return categories; }
+    public void getCategories(List<Category> cats) { categories = cats; }
+    public void addCategory(Category cat) { categories.add(cat); }
+    public void removeCategory(Integer id){ }
 
     public String getImageName() {
         return imageName;
