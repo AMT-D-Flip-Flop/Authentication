@@ -1,9 +1,6 @@
 package com.amt.dflipflop.Entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class Product {
@@ -26,6 +23,9 @@ public class Product {
 
     private String description;
 
+    @OneToOne
+    private Category category;
+
     private Float price;
 
     private String imageName;
@@ -33,7 +33,6 @@ public class Product {
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }
@@ -41,7 +40,6 @@ public class Product {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -49,20 +47,26 @@ public class Product {
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+    public String getCategoryName() {
+        return this.category != null ? category.getName() : "";
+    }
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getImageName() {
         return imageName;
     }
-
     public String getImageRelativePath() {
-        // assuming we have only PNG files
-        return "images/" + imageName + ".png";
+        return "images/" + imageName;
     }
-
     public void setImageName(String imageName) {
         this.imageName = imageName;
     }
@@ -70,8 +74,7 @@ public class Product {
     public Float getPrice() {
         return price;
     }
-
-    public void setId(Float price) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 

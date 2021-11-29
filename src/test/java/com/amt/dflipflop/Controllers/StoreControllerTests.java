@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.amt.dflipflop.Services.CategoryService;
 import com.amt.dflipflop.Services.ProductService;
 import org.junit.jupiter.api.Test;
 
@@ -21,6 +22,9 @@ public class StoreControllerTests {
 
     @MockBean
     private ProductService productService;
+
+    @MockBean
+    private CategoryService categoryService;
 
     @Test
     public void shouldDisplayStore() throws Exception {

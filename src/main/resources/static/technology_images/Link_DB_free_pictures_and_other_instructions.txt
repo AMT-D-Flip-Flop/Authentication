@@ -1,0 +1,12 @@
+
+free pictures:
+https://unsplash.com/s/photos/laptop
+https://www.pngegg.com/fr
+https://all-free-download.com/free-photos/macbook.html
+
+free icons:
+httpsall-free-download.comfree-icon
+
+autres infos (carousel de l'index):
+style.css contient le style des chaussures
+Changer les images dans index.html pour tester le carousel

@@ -8,6 +8,39 @@
 <!-- New Arrivals section start -->
 <div class="collection_text">Add Product</div>
 <!-- New Arrivals section end -->
+<div class="collection_section layout_padding">
+    <div class="container">
+        <form method="POST" action="#" th:action="@{/store/add-product}" th:object="${product}" enctype="multipart/form-data" class="consectetur_text">
+            <div class="form-group">
+                <label for="pName">Product Name</label>
+                <input type="text" class="form-control" id="pName" th:field="*{name}" required>
+            </div>
+            <div class="form-group">
+                <label for="pPrice">Price (CHF)</label>
+                <input type="number" min="0" class="form-control" id="pPrice" th:field="*{price}" required>
+            </div>
+            <div class="form-group">
+                <label for="pDescription">Description</label>
+                <input type="text" class="form-control" id="pDescription" th:field="*{description}" required>
+            </div>
+            <div class="form-group">
+                <label for="pPicture">Product Picture</label>
+                <input type="file" class="form-control-file" name="image" id="pPicture">
+            </div>
+            <div class="form-group">
+                <label for="pCategory">Category</label>
+                <select name="cat" th:field="*{category}" hidden id="pCategory">
+                    <option th:each="cat : ${categories}"
+                            th:value="${cat.getId()}"
+                            th:text="${cat.getName()}"
+                    >
+                    </option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
 <!-- section footer start -->
 <div th:replace="fragments/components :: footer"></div>
 <div th:replace="fragments/components :: copyright"></div>

@@ -2,7 +2,7 @@
 
 DFlipFLop est une application e-commerce web qui offre à ses clients une large gamme de produits informatique.
 
-##Prérequis
+## Prérequis
 **Développement**
 - MySQL 5.7+ ou MariaDB 10.2+
 - Java 8
@@ -29,7 +29,7 @@ DFlipFLop est une application e-commerce web qui offre à ses clients une large 
 
 ## Déployement
 
-Pour déployer l'application, copier le script *Setup/server-setup.sh* sur le serveur et suivez la procédure d'installation.
+Pour déployer l'application, copiez le script *Setup/server-setup.sh* sur le serveur et suivez la procédure d'installation.
 
 Sur la machine de build, créer un fichier **settings.xml** dans le dossier **.m2** de votre home directory qui contient les informations de connexion à votre serveur Tomcat
 ```xml
@@ -54,7 +54,7 @@ Démarrez le deployment:
 ``
 
 ## Contribuer
-Vous pouvez contribuer au projet en créant une Pull Request pour chaque nouveau feature à ajouter. Vous pouvez aussi ouvrir une issue pour des petits changements.
+Rendez vous sur la partie [collaboration](https://github.com/AMT-D-Flip-Flop/AMT-projet/wiki/Collaboration) du wiki pour vous renseigner sur le workflow pour contribuer au projet.
 
 N'oubliez pas de créer des tests en fonction des nouvelles fonctionnalités ajoutées.
 
