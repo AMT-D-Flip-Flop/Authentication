@@ -842,3 +842,13 @@ a:hover {
 .empty-cart > a{
     color: black;
 }
+
+
+.cart-container {
+    text-align: center;
+    width: 100%;
+    float: left;
+}
+.empty-cart-text{
+    text-align: center;
+}
