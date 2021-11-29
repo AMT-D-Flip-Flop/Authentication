@@ -1,7 +1,9 @@
 package com.amt.dflipflop.Entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class Product {
@@ -24,11 +26,8 @@ public class Product {
 
     private String description;
 
-    @OneToOne
-    private Category category;
-
     @OneToMany
-    private List<Category> categories;
+    private Set<Category> categories;
 
     private Float price;
 
@@ -55,20 +54,28 @@ public class Product {
         this.description = description;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-    public String getCategoryName() {
-        return this.category != null ? category.getName() : "";
-    }
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public List<Category> getCategories() { return categories; }
-    public void getCategories(List<Category> cats) { categories = cats; }
+    public Set<Category> getCategories() { return categories; }
+    public void setCategories(Set<Category> cats) { categories = cats; }
     public void addCategory(Category cat) { categories.add(cat); }
-    public void removeCategory(Integer id){ }
+    public void removeCategory(int index){ categories.remove(index) ;}
+    public void removeCategory(Category cat){ categories.remove(cat); }
+    public String getCategoriesNames() {
+        StringBuilder str = new StringBuilder();
+
+        for(Category cat : categories){
+            str.append(cat.getName());
+            str.append(" "); // supplementary space, but can't do much to fix it cleanly
+        }
+
+        return str.toString();
+    }
+    public ArrayList<Integer> getCategoriesId(){
+        ArrayList<Integer> ids = new ArrayList<>();
+        for(Category cat: categories){
+            ids.add(cat.getId());
+        }
+        return ids;
+    }
 
     public String getImageName() {
         return imageName;

@@ -16,10 +16,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.nio.file.*;
+import java.util.HashSet;
+import java.util.List;
 
 @Controller
 public class CategoriesController {
-
 
     @Autowired
     private CategoryService categoryService;
@@ -61,6 +62,8 @@ public class CategoriesController {
     @GetMapping(path="/categories/remove")
     public String removeCategory (@RequestParam(value = "id") Integer id) throws IOException {
 
+        // Check if any item uses this category<
+
         // Add the category via a category service
         categoryService.remove(id);
 
@@ -68,24 +71,31 @@ public class CategoriesController {
     }
 
     /**
-     * Called with /categories/set_category?product=N&cat=N
+     * Assign the categories to the product
      * @return The redirection to a page
      * @throws IOException If suppress fail
      */
-    @GetMapping(path="/categories/set_category")
+    @PostMapping(path="/categories/set_category")
     public String setCategory (
             @RequestParam(value = "product") Integer productId,
-            @RequestParam(value = "cat") Integer categoryId) throws IOException {
+            @RequestParam(value = "cat") List<Integer> categoriesId) throws IOException {
 
         Product product = productService.get(productId);
-        Category category = categoryService.get(categoryId);
 
-        if (product == null || category == null)
+        if (product == null)
         {
             return "redirect:/store";
         }
 
-        product.setCategory(category);
+        HashSet<Category> categories = new HashSet<Category>();
+        for(int id: categoriesId){
+            Category category = categoryService.get(id);
+            if(category != null){
+                categories.add(category);
+            }
+        }
+
+        product.setCategories(categories);
         productService.update(product);
 
         return "redirect:/store/product/" + productId;
