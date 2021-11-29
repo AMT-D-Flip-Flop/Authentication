@@ -1,7 +1,6 @@
 package com.amt.dflipflop.Controllers;
 import com.amt.dflipflop.Entities.Category;
 import com.amt.dflipflop.Entities.Product;
-import com.amt.dflipflop.Entities.ProductSelection;
 import com.amt.dflipflop.Services.CategoryService;
 import com.amt.dflipflop.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ import java.nio.file.*;
 @Controller
 public class StoreController {
 
-    @GetMapping("/insert_items") // Uncomment if needed
+    /*@GetMapping("/insert_items") // Uncomment if needed
     public String insertItems(Model model) {
         productService.insert(new Product("Produit 1", "Super produit 1", 3.5f, "shoes-img3.png"));
         productService.insert(new Product("Produit 2", "Super produit 2", 6.7f, "shoes-img9.png"));
@@ -30,7 +29,7 @@ public class StoreController {
         productService.insert(new Product("Produit 6", "Super produit 6", 12f, "shoes-img9.png"));
 
         return "redirect:store";
-    }
+    }*/
 
 
     @Autowired
@@ -89,7 +88,8 @@ public class StoreController {
      */
     @PostMapping(path="/store/add-product") // Map ONLY POST Requests
     public String addNewProduct (@ModelAttribute("product") Product product, @RequestParam("image") MultipartFile multipartFile, BindingResult result) throws IOException {
-        String uploadDir = "src/main/resources/static/images";
+        final String uploadDir = "src/main/resources/static/images";
+        final String defaultImgName = "default.png";
         String fileName;
 
         // Process if an image has been selected
@@ -106,6 +106,8 @@ public class StoreController {
             } catch (IOException ioe) {
                 throw new IOException("Could not save image file: " + fileName, ioe);
             }
+        } else {
+            product.setImageName(defaultImgName);
         }
 
         // Add the product via a product service
