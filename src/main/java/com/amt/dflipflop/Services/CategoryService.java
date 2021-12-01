@@ -21,7 +21,10 @@ public class CategoryService {
 
     public ArrayList<Category> getAll() {
 
+        // DPE - Alors... Je pense qu'il y a moyen de faire ca plus simple ;) (Vous avez le droit d'override la fonction findAll() du repo pour mettre le type de retour que vous avez besoin)
+        // Sinon il y a le addAll() ou le cast mais préférez la première solution
         Iterable<Category> it = categoryRepository.findAll();
+
 
         ArrayList<Category> categories = new ArrayList<Category>();
         it.forEach(categories::add);
@@ -30,6 +33,8 @@ public class CategoryService {
     }
 
     public ArrayList<Category> getNonEmpty() {
+
+        // DPE - Vous pouvez faire cette action en SQL ;)
         ArrayList<Category> categories = new ArrayList<>();
         ArrayList<Product> products = productService.getAll();
         for(Product product : products){
@@ -44,6 +49,8 @@ public class CategoryService {
 
     public Category get(Integer id) {
         Optional<Category> category = categoryRepository.findById(id);
+
+        // DPE - Il serait intéressant de gérer les erreurs avec des exceptions .orElseThrow()
         return category.orElse(null);
     }
 
@@ -56,6 +63,8 @@ public class CategoryService {
     }
 
     public boolean categoryExists(String name) {
+
+        // DPE - Cette actions est dispo dans le crud repository : https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/CrudRepository.html
         ArrayList<Category> categories = getAll();
         for( Category cat : categories){
             if (cat.getName().equals(name))

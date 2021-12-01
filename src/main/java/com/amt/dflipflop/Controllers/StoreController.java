@@ -19,6 +19,8 @@ import java.nio.file.*;
 @Controller
 public class StoreController {
 
+    // DPE - On evite de garder des blocks de commantaires
+
     /*@GetMapping("/insert_items") // Uncomment if needed
     public String insertItems(Model model) {
         productService.insert(new Product("Produit 1", "Super produit 1", 3.5f, "shoes-img3.png"));

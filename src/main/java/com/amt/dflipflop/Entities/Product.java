@@ -5,6 +5,7 @@ import javax.persistence.*;
 @Entity // This tells Hibernate to make a table out of this class
 public class Product {
 
+    // DPE - Est-ce que vous connaissez lombok ? https://projectlombok.org/
     // needed for SpringBoot Hibernate to create objects
     public Product() {}
 
