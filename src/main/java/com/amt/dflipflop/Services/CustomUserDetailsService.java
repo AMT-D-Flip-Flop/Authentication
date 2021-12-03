@@ -107,7 +107,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserJson t = result.getBody();
         // Code = 200.
         if (result.getStatusCode() == HttpStatus.OK) {
-            CustomUserDetails cs = new CustomUserDetails(user);
+            CustomUserDetails cs = new CustomUserDetails(t);
             User u = new User();
             u.setUsername(username);
             u.setToken(t.getToken());
