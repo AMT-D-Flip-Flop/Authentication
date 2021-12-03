@@ -3,6 +3,7 @@ package com.amt.dflipflop.Services;
 import com.amt.dflipflop.Entities.authentification.User;
 import com.amt.dflipflop.Entities.authentification.UserJson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +21,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     //@Autowired
     //private UserRepository userRepo;
-
+    /*@Value("${serverAuthentication.login}")
+    private String serverAuthentication;*/
 
     JwtProvider jwtProvider;
 
@@ -67,7 +69,10 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @param password  password
      * @return Optional of the Java Web Token, empty otherwise
      */
-    public User signin(String username, String password) {
+
+    public User signin(String username, String password, String serverAuthentication) {
+
+
         //LOGGER.info("New user attempting to sign in");
         Optional<String> token = Optional.empty();
        /* Optional<User> user = userRepo.findByUsername(username);
@@ -85,8 +90,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
 
-        String createPersonUrl = "http://localhost:3000/auth/login";
-
+       // String createPersonUrl = "http://localhost:3000/auth/login";
+        String createPersonUrl = serverAuthentication;
         RestTemplate restTemplate = new RestTemplate();
         UserJson user = new UserJson();
         user.setPassword(password);
