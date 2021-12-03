@@ -1,6 +1,7 @@
 package com.amt.dflipflop.Controllers;
 
 import com.amt.dflipflop.Entities.authentification.CustomAuthenticationProvider;
+import com.amt.dflipflop.Entities.authentification.CustomUserDetails;
 import com.amt.dflipflop.Entities.authentification.UserJson;
 import com.amt.dflipflop.Services.CustomUserDetailsService;
 import com.amt.dflipflop.Entities.authentification.User;
@@ -27,7 +28,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class UserController {
     private final CustomUserDetailsService cs = new CustomUserDetailsService();
-    private UserJson authenticatedUser = new UserJson();
+    private CustomUserDetails authenticatedUser;
     private final ObjectMapper objectMapper = new ObjectMapper();
     private AuthenticationManager authenticationManager = new AuthenticationManager() {
         CustomAuthenticationProvider cp = new CustomAuthenticationProvider();

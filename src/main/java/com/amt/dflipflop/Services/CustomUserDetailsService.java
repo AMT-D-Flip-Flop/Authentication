@@ -1,5 +1,6 @@
 package com.amt.dflipflop.Services;
 
+import com.amt.dflipflop.Entities.authentification.CustomUserDetails;
 import com.amt.dflipflop.Entities.authentification.User;
 import com.amt.dflipflop.Entities.authentification.UserJson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @return Optional of the Java Web Token, empty otherwise
      */
 
-    public UserJson signin(String username, String password, String serverAuthentication) {
+    public CustomUserDetails signin(String username, String password, String serverAuthentication) {
 
 
         //LOGGER.info("New user attempting to sign in");
@@ -106,6 +107,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserJson t = result.getBody();
         // Code = 200.
         if (result.getStatusCode() == HttpStatus.OK) {
+            CustomUserDetails cs = new CustomUserDetails(user);
             User u = new User();
             u.setUsername(username);
             u.setToken(t.getToken());
@@ -113,7 +115,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
             // Optional.of(jwtProvider.createToken(username, user.get().getRoles()));
             token = Optional.ofNullable(user.getToken());
-            return user;
+            return cs;
         }else{
             throw new UsernameNotFoundException("User not found");
         }
