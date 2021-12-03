@@ -86,11 +86,13 @@ public class UserController {
         // Authenticate the user
         Authentication authentication = authenticationManager.authenticate(authRequest);
         SecurityContext securityContext = SecurityContextHolder.getContext();
+
         securityContext.setAuthentication(authentication);
 
         // Create a new session and add the security context.
         HttpSession session = req.getSession(true);
         session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+        session.setAttribute("id", authenticatedUser.getId());
 
                 /*.orElseThrow(()->
                 new HttpServerErrorException(HttpStatus.FORBIDDEN, "Login Failed"));*/
