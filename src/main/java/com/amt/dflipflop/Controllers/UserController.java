@@ -1,6 +1,7 @@
 package com.amt.dflipflop.Controllers;
 
 import com.amt.dflipflop.Entities.authentification.CustomAuthenticationProvider;
+import com.amt.dflipflop.Entities.authentification.UserJson;
 import com.amt.dflipflop.Services.CustomUserDetailsService;
 import com.amt.dflipflop.Entities.authentification.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,7 +27,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class UserController {
     private final CustomUserDetailsService cs = new CustomUserDetailsService();
-    private User authenticatedUser = new User();
+    private UserJson authenticatedUser = new UserJson();
     private final ObjectMapper objectMapper = new ObjectMapper();
     private AuthenticationManager authenticationManager = new AuthenticationManager() {
         CustomAuthenticationProvider cp = new CustomAuthenticationProvider();
@@ -75,7 +76,7 @@ public class UserController {
     public String login(@RequestParam("username") String username, @RequestParam("password") String pwd,
                         Model model, HttpServletResponse response, HttpServletRequest req) {
 
-        this.authenticatedUser = cs.signin(username,pwd, serverAuthentication);
+        authenticatedUser = cs.signin(username,pwd, serverAuthentication);
         //https://www.baeldung.com/manually-set-user-authentication-spring-security
         //https://stackoverflow.com/questions/4664893/how-to-manually-set-an-authenticated-user-in-spring-security-springmvc
         UsernamePasswordAuthenticationToken authRequest

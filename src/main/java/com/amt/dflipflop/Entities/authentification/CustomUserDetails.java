@@ -23,9 +23,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class CustomUserDetails implements UserDetails {
 
-    private User user;
 
-    public CustomUserDetails(User user) {
+
+    private UserJson user;
+
+    public CustomUserDetails( UserJson  user) {
         this.user = user;
     }
 
@@ -37,6 +39,10 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public String getPassword() {
        return user.getPassword();
+    }
+
+    public int getId() {
+        return user.getAccount().getId();
     }
 
     @Override
