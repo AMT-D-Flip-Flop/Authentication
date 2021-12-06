@@ -12,7 +12,7 @@
 
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 8081;
 //var  bodyParser = require('body-parser');
 var bodyParser = require('body-parser')
 class User{
@@ -62,7 +62,7 @@ app.post('/auth/login', jsonParser, function (
                 "role": "string"
             }
         }
-        const token = jwt.sign(user, 'secret',{ algorithm: 'HS256'});
+        const token = jwt.sign(user, 'secret',{ algorithm: 'HS256',  expiresIn: '24h'},  );
         console.log("succs", token)
         send = {
             "token": token,

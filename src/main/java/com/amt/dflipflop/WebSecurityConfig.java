@@ -11,6 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import security.JwtTokenFilter;
+import security.TokenAuthenticationFilter;
+
+import javax.servlet.Filter;
 
 @Configuration
 @EnableWebSecurity
@@ -31,15 +34,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                     .antMatchers("/**", "/css/*", "/js/*", "/images/*", "/demo/*").permitAll()
-                    .and();// Disable csrf for now
-
+                    .and()
+                    .addFilterBefore(new JwtTokenFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class)// Disable csrf for now
+                    .addFilterBefore(new TokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                    .logout()
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID")
+                    .deleteCookies("bearer");
 
 
         // No session will be created or used by spring security
         //??DIsuc
         //http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(new JwtTokenFilter(userDetailsService), UsernamePasswordAuthenticationFilter.class);
+
     }
+
+
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {

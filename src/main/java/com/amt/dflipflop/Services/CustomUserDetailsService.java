@@ -89,23 +89,29 @@ public class CustomUserDetailsService implements UserDetailsService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-
-       // String createPersonUrl = "http://localhost:3000/auth/login";
-        String createPersonUrl = serverAuthentication;
         RestTemplate restTemplate = new RestTemplate();
         UserJson user = new UserJson();
         user.setPassword(password);
         user.setUsername(username);
+
         // Data attached to the request.
         HttpEntity<UserJson> requestBody = new HttpEntity<>(user, headers);
 
         // Send request with POST method.
-        ResponseEntity<UserJson> result
-                = restTemplate.postForEntity(createPersonUrl, requestBody, UserJson.class);
+        ResponseEntity<UserJson> result = null;
+        try{
+            result = restTemplate.postForEntity(serverAuthentication, requestBody, UserJson.class);
+        }catch(Exception e){
+            return  new CustomUserDetails(null);
+        }
+
 
         System.out.println("Status code:" + result.getStatusCode());
         UserJson t = result.getBody();
         // Code = 200.
+        if(t.getError() != null){
+            throw new UsernameNotFoundException(t.getError());
+        }
         if (result.getStatusCode() == HttpStatus.OK) {
             CustomUserDetails cs = new CustomUserDetails(t);
             User u = new User();

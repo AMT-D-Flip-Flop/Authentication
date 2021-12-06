@@ -48,6 +48,16 @@ class Account implements Serializable {
 public class UserJson  implements Serializable {
 
     private String token;
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    private String error;
     public String getToken() {
         return token;
     }

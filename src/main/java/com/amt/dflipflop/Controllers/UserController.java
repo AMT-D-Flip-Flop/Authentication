@@ -78,6 +78,9 @@ public class UserController {
                         Model model, HttpServletResponse response, HttpServletRequest req) {
 
         authenticatedUser = cs.signin(username,pwd, serverAuthentication);
+        if(authenticatedUser.userIsNull()){
+            return "redirect:/login";
+        }
         //https://www.baeldung.com/manually-set-user-authentication-spring-security
         //https://stackoverflow.com/questions/4664893/how-to-manually-set-an-authenticated-user-in-spring-security-springmvc
         UsernamePasswordAuthenticationToken authRequest
@@ -93,6 +96,7 @@ public class UserController {
         HttpSession session = req.getSession(true);
         session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
         session.setAttribute("id", authenticatedUser.getId());
+        session.setAttribute("user", authenticatedUser);
 
                 /*.orElseThrow(()->
                 new HttpServerErrorException(HttpStatus.FORBIDDEN, "Login Failed"));*/
@@ -155,7 +159,7 @@ public class UserController {
         */
         //
         //String createPersonUrl = "http://mobile.iict.ch/api/json";");
-        String createPersonUrl = "http://localhost:3000/accounts/register";
+        String createPersonUrl = serverAuthenticationRegister;
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -163,22 +167,27 @@ public class UserController {
         HttpEntity<User> requestBody = new HttpEntity<>(user);
 
         // Send request with POST method.
-        ResponseEntity<User> result
-                = restTemplate.postForEntity(createPersonUrl, requestBody, User.class);
+        try{
+            ResponseEntity<User> result
+                    = restTemplate.postForEntity(createPersonUrl, requestBody, User.class);
 
-        User u = result.getBody();
+            User u = result.getBody();
 
-        System.out.println("Status code:" + result.getStatusCode());
+            System.out.println("Status code:" + result.getStatusCode());
 
-        // Code = 200.
-        if (result.getStatusCode() == HttpStatus.OK) {
-           /* User e = result.getBody();
-            */
-            return "authentification/register_success";
-            //return "redirect:register_success";
-        }else{
-            return "authentification/signup_form";
-            //return "signup_form";
+            // Code = 200.
+            if (result.getStatusCode() == HttpStatus.OK) {
+                /* User e = result.getBody();
+                 */
+               return "redirect:/login";
+                //return "redirect:register_success";
+            }else{
+                return "authentification/signup_form";
+                //return "signup_form";
+            }
+        }catch(Exception e){
+            return "redirect:/register";
         }
+
     }
 }
