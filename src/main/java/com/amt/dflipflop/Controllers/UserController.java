@@ -181,4 +181,23 @@ public class UserController {
             //return "signup_form";
         }
     }
+
+    @GetMapping("/profile")
+    public String profilePage(Model model){
+        if(authenticatedUser == null){
+            return "redirect:login";
+        }
+
+        User user = new User();
+        user.setUsername("petit_poulet78");
+        user.setEmail("pp78@gmail.com");
+        user.setFirstName("Doncald");
+        user.setLastName("Truc");
+        user.setRole("Administrator");
+
+        model.addAttribute("user", user);
+        //User user = authenticatedUser.getId()
+
+        return "authentification/profile";
+    }
 }
