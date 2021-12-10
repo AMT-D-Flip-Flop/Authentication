@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.client.RestTemplate;
-import security.JwtProvider;
+import security.archive.JwtProvider;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -105,23 +105,23 @@ public class CustomUserDetailsService implements UserDetailsService {
             return  new CustomUserDetails(null);
         }
 
+        UserJson userJsonResponse = result.getBody();
 
-        System.out.println("Status code:" + result.getStatusCode());
-        UserJson t = result.getBody();
-        // Code = 200.
-        if(t.getError() != null){
-            throw new UsernameNotFoundException(t.getError());
+        // Error
+        if(userJsonResponse.getError() != null){
+            throw new UsernameNotFoundException(userJsonResponse.getError());
         }
         if (result.getStatusCode() == HttpStatus.OK) {
-            CustomUserDetails cs = new CustomUserDetails(t);
-            User u = new User();
-            u.setUsername(username);
-            u.setToken(t.getToken());
-            //authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-
-            // Optional.of(jwtProvider.createToken(username, user.get().getRoles()));
-            token = Optional.ofNullable(user.getToken());
+            CustomUserDetails cs = new CustomUserDetails(userJsonResponse);
             return cs;
+            /*User u = new User();
+            u.setUsername(username);
+            u.setToken(userJsonResponse.getToken());
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+
+             Optional.of(jwtProvider.createToken(username, user.get().getRoles()));
+
+             token = Optional.ofNullable(user.getToken());*/
         }else{
             throw new UsernameNotFoundException("User not found");
         }

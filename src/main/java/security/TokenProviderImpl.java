@@ -1,6 +1,9 @@
 package security;
 
+import com.amt.dflipflop.Entities.authentification.Account;
 import io.jsonwebtoken.*;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -9,6 +12,9 @@ import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @Author: TCMALTUNKAN - MEHMET ANIL ALTUNKAN
@@ -25,6 +31,8 @@ public class TokenProviderImpl implements TokenProvider {
 
     @Value("${authentication-test.auth.refreshTokenExpirationMsec}")
     private Long refreshTokenExpirationMsec;
+
+    private LinkedHashMap lp;
 
     @Override
     public Token generateAccessToken(String subject) {
@@ -53,12 +61,25 @@ public class TokenProviderImpl implements TokenProvider {
                 .compact();
         return new Token(Token.TokenType.REFRESH, token, duration, LocalDateTime.ofInstant(expiryDate.toInstant(), ZoneId.systemDefault()));
     }
+    @Override
+    public HashMap getAccountFromToken(String token){
+        Claims claims = Jwts.parser().setSigningKey(tokenSecret.getBytes(Charset.forName("UTF-8"))).parseClaimsJws(token).getBody();
+        lp = (LinkedHashMap) claims.get("account");
+        return lp;
+    }
 
     @Override
-    public String getUsernameFromToken(String token) {
-        Claims claims = Jwts.parser().setSigningKey(tokenSecret).parseClaimsJws(token).getBody();
-        return claims.getSubject();
+    public String getUsernameFromToken(String token) throws Exception {
+
+        return (String) lp.get("username");
+        //return claims.get("account").;
+
+        //throw new Exception("d" + claims.getSubject() + claims.getExpiration() + claims.get("account") + claims.get("Account"));
+        //return claims.getSubject();
+
     }
+
+
 
     @Override
     public LocalDateTime getExpiryDateFromToken(String token) {

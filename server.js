@@ -68,8 +68,8 @@ app.post('/auth/login', jsonParser, function (
             "token": token,
             "account": {
                 "id": 0,
-                "username": "string",
-                "role": "string"
+                "username": "dflipflop",
+                "role": "admin"
             }
         }
     } else {

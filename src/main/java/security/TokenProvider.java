@@ -1,6 +1,7 @@
 package security;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 
 /**
  * @Author: TCMALTUNKAN - MEHMET ANIL ALTUNKAN
@@ -11,9 +12,12 @@ public interface TokenProvider {
 
     Token generateRefreshToken(String subject);
 
-    String getUsernameFromToken(String token);
+    String getUsernameFromToken(String token) throws Exception;
+
+    HashMap getAccountFromToken(String token);
 
     LocalDateTime getExpiryDateFromToken(String token);
 
     boolean validateToken(String token) throws Exception;
+
 }
