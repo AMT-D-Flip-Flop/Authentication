@@ -1,6 +1,9 @@
 package com.amt.dflipflop.Entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class Product {
@@ -23,8 +26,8 @@ public class Product {
 
     private String description;
 
-    @OneToOne
-    private Category category;
+    @OneToMany
+    private Set<Category> categories;
 
     private Float price;
 
@@ -51,14 +54,27 @@ public class Product {
         this.description = description;
     }
 
-    public Category getCategory() {
-        return category;
+    public Set<Category> getCategories() { return categories; }
+    public void setCategories(Set<Category> cats) { categories = cats; }
+    public void addCategory(Category cat) { categories.add(cat); }
+    public void removeCategory(int index){ categories.remove(index) ;}
+    public void removeCategory(Category cat){ categories.remove(cat); }
+    public String getCategoriesNames() {
+        StringBuilder str = new StringBuilder();
+
+        for(Category cat : categories){
+            str.append(" "); // supplementary space is needed in the template, so no problem here
+            str.append(cat.getName());
+        }
+
+        return str.toString();
     }
-    public String getCategoryName() {
-        return this.category != null ? category.getName() : "";
-    }
-    public void setCategory(Category category) {
-        this.category = category;
+    public ArrayList<Integer> getCategoriesId(){
+        ArrayList<Integer> ids = new ArrayList<>();
+        for(Category cat: categories){
+            ids.add(cat.getId());
+        }
+        return ids;
     }
 
     public String getImageName() {

@@ -3,7 +3,6 @@ package com.amt.dflipflop.Services;
 import com.amt.dflipflop.Entities.Category;
 import com.amt.dflipflop.Entities.Product;
 import com.amt.dflipflop.Repositories.CategoryRepository;
-import com.amt.dflipflop.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,12 +32,11 @@ public class CategoryService {
         ArrayList<Category> categories = new ArrayList<>();
         ArrayList<Product> products = productService.getAll();
         for(Product product : products){
-            Category cat = product.getCategory();
+            for(Category cat : product.getCategories())
             if(cat  != null && !categories.contains(cat)){
                 categories.add(cat);
             }
         }
-
         return categories;
     }
 
@@ -62,6 +60,18 @@ public class CategoryService {
                 return true;
         }
         return false;
+    }
+
+    public boolean isCategoryEmpty(Integer id){
+        ArrayList<Product> products = productService.getAll();
+
+        for(Product product : products){
+            if(product.getCategoriesId().contains(id)){
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public Long count() {
