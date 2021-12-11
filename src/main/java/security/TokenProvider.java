@@ -3,7 +3,9 @@
  * Dernier contributeur : Ryan Sauge
  * Groupe               : AMT-D-Flip-Flop
  * Description          : Interface pour gérer les tokens
- * Remarque             : -
+ * Remarque             :
+ * Sources :TCMALTUNKAN - MEHMET ANIL ALTUNKAN
+ *
  */
 
 
@@ -13,10 +15,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
-/**
- * @Author: TCMALTUNKAN - MEHMET ANIL ALTUNKAN
- * @Date: 30.12.2019:09:39, Pzt
- **/
+
 public interface TokenProvider {
     Token generateAccessToken(String subject) throws IOException;
 

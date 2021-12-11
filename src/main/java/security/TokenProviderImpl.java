@@ -3,21 +3,17 @@
  * Groupe               : AMT-D-Flip-Flop
  * Description          : Implémentation de TokenProvider
  * Remarque             : -
+ * Sources : TCMALTUNKAN - MEHMET ANIL ALTUNKAN
  */
 
 package security;
 
-import com.amt.dflipflop.Entities.authentification.Account;
 import io.jsonwebtoken.*;
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -28,12 +24,8 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
-/**
- * @Author: TCMALTUNKAN - MEHMET ANIL ALTUNKAN
- * @Date: 30.12.2019:09:40, Pzt
- **/
+
 @Service
 public class TokenProviderImpl implements TokenProvider {
     Logger logger = LoggerFactory.getLogger(TokenProvider.class);
@@ -43,7 +35,8 @@ public class TokenProviderImpl implements TokenProvider {
     private boolean keyGenerated;
 
     //@Value(value = "${mode.choice}")
-    private String mode = "prod";
+    //private String mode = "prod";
+    private String mode = "noProd";
     private String jwtfileNamePath = "zone_secret/jwt.txt";
 
     @Value("${authentication-test.auth.tokenExpirationMsec}")
@@ -85,11 +78,11 @@ public class TokenProviderImpl implements TokenProvider {
     void generateKey() throws IOException {
         //logger.error("key generate");
         //logger.error("value:" + keyGenerated);
-       // logger.error("value:" + mode.equals("prod"));
+        // logger.error("value:" + mode.equals("prod"));
 
-        if(!keyGenerated && mode.equals("prod")){
+        if (!keyGenerated && mode.equals("prod")) {
             logger.error("reade file");
-            tokenSecret = readLine(        jwtfileNamePath);
+            tokenSecret = readLine(jwtfileNamePath);
             keyGenerated = true;
         }
     }
@@ -123,6 +116,7 @@ public class TokenProviderImpl implements TokenProvider {
                 .compact();
         return new Token(Token.TokenType.REFRESH, token, duration, LocalDateTime.ofInstant(expiryDate.toInstant(), ZoneId.systemDefault()));
     }
+
     @Override
     public HashMap getAccountFromToken(String token) throws Exception {
         generateKey();
@@ -131,8 +125,8 @@ public class TokenProviderImpl implements TokenProvider {
         lp = new LinkedHashMap();
         lp.put("username", claims.getSubject());
         lp.put("role", claims.get("role"));
-       // lp = (LinkedHashMap) claims.get("account");
-        if(lp == null){
+        // lp = (LinkedHashMap) claims.get("account");
+        if (lp == null) {
             throw new Exception("User hashamp is null 1");
         }
         return lp;
@@ -140,7 +134,7 @@ public class TokenProviderImpl implements TokenProvider {
 
     @Override
     public String getUsernameFromToken(String token) throws Exception {
-        if(lp == null){
+        if (lp == null) {
             throw new Exception("User hashamp is null");
         }
         return (String) lp.get("username");
@@ -151,7 +145,6 @@ public class TokenProviderImpl implements TokenProvider {
         //return claims.getSubject();
 
     }
-
 
 
     @Override
@@ -169,7 +162,7 @@ public class TokenProviderImpl implements TokenProvider {
             https://stackoverflow.com/questions/65306718/io-jsonwebtoken-signatureexception-jwt-signature-does-not-match-locally-compute
              */
             JwtParser jwt = Jwts.parser().setSigningKey(tokenSecret.getBytes(Charset.forName("UTF-8")));
-            jwt.parseClaimsJws(token.replace("{", "").replace("}","")).getBody();
+            jwt.parseClaimsJws(token.replace("{", "").replace("}", "")).getBody();
             //jwt.parse(token);
             return true;
         } catch (SignatureException ex) {

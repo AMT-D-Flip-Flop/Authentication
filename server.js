@@ -59,13 +59,14 @@ app.post('/auth/login', jsonParser, function (
 
 
         user = {
-            "account": {
+            role: userRole,
+            /*"account": {
                 "id": 0,
                 "username": userAdmin,
                 "role": userRole
-            }
+            }*/
         }
-        const token = jwt.sign(user, 'secret',{ algorithm: 'HS256',  expiresIn: '24h', subject: userAdmin, role: userRole } );
+        const token = jwt.sign(user, 'secret',{ algorithm: 'HS256',  expiresIn: '24h', subject: userAdmin } );
         console.log("succs", token)
         send = {
             "token": token,
