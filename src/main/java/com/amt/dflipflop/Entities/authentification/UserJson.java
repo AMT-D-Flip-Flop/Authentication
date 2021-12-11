@@ -1,11 +1,16 @@
+/**
+ * Date de création     : 06.12.2021
+ * Dernier contributeur : Ryan Sauge
+ * Groupe               : AMT-D-Flip-Flop
+ * Description          : Serialiser la réponse du serveur d'authentification
+ */
+
 package com.amt.dflipflop.Entities.authentification;
 
-import javax.persistence.Id;
 import java.io.Serializable;
 
 
-
-public class UserJson  implements Serializable {
+public class UserJson implements Serializable {
 
     private String token;
 
@@ -18,6 +23,7 @@ public class UserJson  implements Serializable {
     }
 
     private String error;
+
     public String getToken() {
         return token;
     }
@@ -25,6 +31,7 @@ public class UserJson  implements Serializable {
     public void setToken(String token) {
         this.token = token;
     }
+
     private String username;
     private Account account;
     private String password;
@@ -53,7 +60,7 @@ public class UserJson  implements Serializable {
         this.account = account;
     }
 
-    public void setAccountPublic(int id, String username, String role){
+    public void setAccountPublic(int id, String username, String role) {
         setAccount(new Account(id, username, role));
     }
 }

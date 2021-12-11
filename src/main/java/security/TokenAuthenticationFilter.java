@@ -1,3 +1,12 @@
+/**
+ * Date de création     : 06.12.2021
+ * Dernier contributeur : Ryan Sauge
+ * Groupe               : AMT-D-Flip-Flop
+ * Description          : Filter pour récupérer et tester le jwt
+ * Remarque             : -
+ * Sources :
+ */
+
 package security;
 
 
@@ -12,8 +21,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -38,7 +45,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Value("${authentication-test.auth.refreshTokenCookieName}")
     private String refreshTokenCookieName;
 
-    @Autowired
+
     private TokenProvider tokenProvider = new TokenProviderImpl();
 
     @Autowired

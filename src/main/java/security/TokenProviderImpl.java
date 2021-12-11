@@ -1,13 +1,23 @@
+/**
+ * Date de création     : 06.12.2021
+ * Groupe               : AMT-D-Flip-Flop
+ * Description          : Implémentation de TokenProvider
+ * Remarque             : -
+ */
+
 package security;
 
 import com.amt.dflipflop.Entities.authentification.Account;
 import io.jsonwebtoken.*;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -26,13 +36,15 @@ import java.util.Map;
  **/
 @Service
 public class TokenProviderImpl implements TokenProvider {
-
+    Logger logger = LoggerFactory.getLogger(TokenProvider.class);
     //@Value("${authentication-test.auth.tokenSecret}")
     private String tokenSecret = "secret";
-    private boolean keyGenerated = false;
 
-    @Value("${mode}")
-    private String mode;
+    private boolean keyGenerated;
+
+    //@Value(value = "${mode.choice}")
+    private String mode = "prod";
+    private String jwtfileNamePath = "zone_secret/jwt.txt";
 
     @Value("${authentication-test.auth.tokenExpirationMsec}")
     private Long tokenExpirationMsec;
@@ -41,6 +53,11 @@ public class TokenProviderImpl implements TokenProvider {
     private Long refreshTokenExpirationMsec;
 
     private LinkedHashMap lp;
+
+    public TokenProviderImpl() {
+        this.keyGenerated = false;
+    }
+
 
     //Read file content into the string with - Files.lines(Path path, Charset cs)
 
@@ -61,24 +78,24 @@ public class TokenProviderImpl implements TokenProvider {
         String st = br.readLine();
         // Consition holds true till
         // there is character in a string
+
         return st;
     }
 
-    void generateKey() {
-        if(!keyGenerated && mode.equals("prod")){
-            try {
-                tokenSecret = readLine(        "zone_secret/jwt.txt");
-            }catch(Exception e){
-                //
-            }
+    void generateKey() throws IOException {
+        //logger.error("key generate");
+        //logger.error("value:" + keyGenerated);
+       // logger.error("value:" + mode.equals("prod"));
 
+        if(!keyGenerated && mode.equals("prod")){
+            logger.error("reade file");
+            tokenSecret = readLine(        jwtfileNamePath);
             keyGenerated = true;
         }
-
     }
 
     @Override
-    public Token generateAccessToken(String subject) {
+    public Token generateAccessToken(String subject) throws IOException {
         generateKey();
         Date now = new Date();
         Long duration = now.getTime() + tokenExpirationMsec;
@@ -93,7 +110,7 @@ public class TokenProviderImpl implements TokenProvider {
     }
 
     @Override
-    public Token generateRefreshToken(String subject) {
+    public Token generateRefreshToken(String subject) throws IOException {
         generateKey();
         Date now = new Date();
         Long duration = now.getTime() + refreshTokenExpirationMsec;
@@ -107,17 +124,27 @@ public class TokenProviderImpl implements TokenProvider {
         return new Token(Token.TokenType.REFRESH, token, duration, LocalDateTime.ofInstant(expiryDate.toInstant(), ZoneId.systemDefault()));
     }
     @Override
-    public HashMap getAccountFromToken(String token){
+    public HashMap getAccountFromToken(String token) throws Exception {
         generateKey();
         Claims claims = Jwts.parser().setSigningKey(tokenSecret.getBytes(Charset.forName("UTF-8"))).parseClaimsJws(token).getBody();
-        lp = (LinkedHashMap) claims.get("account");
+        logger.error(claims.toString());
+        lp = new LinkedHashMap();
+        lp.put("username", claims.getSubject());
+        lp.put("role", claims.get("role"));
+       // lp = (LinkedHashMap) claims.get("account");
+        if(lp == null){
+            throw new Exception("User hashamp is null 1");
+        }
         return lp;
     }
 
     @Override
     public String getUsernameFromToken(String token) throws Exception {
-
+        if(lp == null){
+            throw new Exception("User hashamp is null");
+        }
         return (String) lp.get("username");
+        //return (String) lp.get("username");
         //return claims.get("account").;
 
         //throw new Exception("d" + claims.getSubject() + claims.getExpiration() + claims.get("account") + claims.get("Account"));
@@ -128,7 +155,7 @@ public class TokenProviderImpl implements TokenProvider {
 
 
     @Override
-    public LocalDateTime getExpiryDateFromToken(String token) {
+    public LocalDateTime getExpiryDateFromToken(String token) throws IOException {
         generateKey();
         Claims claims = Jwts.parser().setSigningKey(tokenSecret).parseClaimsJws(token).getBody();
         return LocalDateTime.ofInstant(claims.getExpiration().toInstant(), ZoneId.systemDefault());

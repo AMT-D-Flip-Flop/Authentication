@@ -46,6 +46,9 @@ app.get('/', (req, res) => {
 })*/
 const jwt = require('jsonwebtoken');
 
+userAdmin = "dflipflop";
+userRole= "admin"
+
 app.post('/auth/login', jsonParser, function (
     req, res) {
     token = ""
@@ -58,18 +61,18 @@ app.post('/auth/login', jsonParser, function (
         user = {
             "account": {
                 "id": 0,
-                "username": "string",
-                "role": "string"
+                "username": userAdmin,
+                "role": userRole
             }
         }
-        const token = jwt.sign(user, 'secret',{ algorithm: 'HS256',  expiresIn: '24h'},  );
+        const token = jwt.sign(user, 'secret',{ algorithm: 'HS256',  expiresIn: '24h', subject: userAdmin, role: userRole } );
         console.log("succs", token)
         send = {
             "token": token,
             "account": {
                 "id": 0,
-                "username": "dflipflop",
-                "role": "admin"
+                "username": userAdmin,
+                "role": userRole
             }
         }
     } else {

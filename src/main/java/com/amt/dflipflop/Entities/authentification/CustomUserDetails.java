@@ -1,20 +1,15 @@
 /**
- * Date de création     : 16.10.2021
+ * Date de création     : 06.12.2021
  * Dernier contributeur : Ryan Sauge
  * Groupe               : AMT-D-Flip-Flop
- * Description          : Tester la connexion avec tomcat
+ * Description          : DAO for authenticated user
  * Remarque             : -
  * Sources :
- * https://www.baeldung.com/spring-boot-testresttemplate
+ * https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tutorial
  */
 
 
 package com.amt.dflipflop.Entities.authentification;
-
-/*
-Source : https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tutorial
- represent an authentication user
- */
 
 import java.util.Collection;
 
@@ -24,14 +19,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class CustomUserDetails implements UserDetails {
 
 
-
     private UserJson user;
 
-    public CustomUserDetails( UserJson  user) {
+    public CustomUserDetails(UserJson user) {
         this.user = user;
     }
 
-    public boolean userIsNull(){
+    public boolean userIsNull() {
         return user == null;
     }
 
@@ -43,16 +37,17 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public String getPassword() {
         return "";
-       //return user.getPassword();
+        //return user.getPassword();
     }
 
     public int getId() {
         return user.getAccount().getId();
     }
 
-    public String getToken(){
+    public String getToken() {
         return user.getToken();
     }
+
     @Override
     public String getUsername() {
         return user.getUsername();
