@@ -184,4 +184,15 @@ public class UserController {
         }
 
     }
+
+    @GetMapping("/profile")
+    public String profilePage(Model model){
+        if(authenticatedUser == null){
+            return "redirect:login";
+        }
+
+        model.addAttribute("user", authenticatedUser);
+
+        return "authentification/profile";
+    }
 }
