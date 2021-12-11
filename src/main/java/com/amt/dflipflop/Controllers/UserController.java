@@ -188,15 +188,7 @@ public class UserController {
             return "redirect:login";
         }
 
-        User user = new User();
-        user.setUsername("petit_poulet78");
-        user.setEmail("pp78@gmail.com");
-        user.setFirstName("Doncald");
-        user.setLastName("Truc");
-        user.setRole("Administrator");
-
-        model.addAttribute("user", user);
-        //User user = authenticatedUser.getId()
+        model.addAttribute("user", authenticatedUser);
 
         return "authentification/profile";
     }
