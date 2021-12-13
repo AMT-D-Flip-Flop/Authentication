@@ -11,11 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-import static java.lang.Integer.parseInt;
 
 @Controller
 public class CartController {
@@ -38,6 +36,8 @@ public class CartController {
     public String displayCart(Model model, HttpServletRequest req) {
         HttpSession session = req.getSession(true);
         Integer userId =  (Integer) session.getAttribute("id");
+        if(userId == null)
+            return "redirect:/login";
         Cart userCart = cartService.getUserCart(userId);
         if(userCart == null){
             userCart= new Cart(userId);
@@ -75,6 +75,8 @@ public class CartController {
 
         HttpSession session = req.getSession(true);
         Integer userId =  (Integer) session.getAttribute("id");
+        if(userId == null)
+            return "redirect:/login";
         Cart userCart = cartService.getUserCart(userId);
         Integer index = 0;
         for (ProductSelection sel: userCart.getSelections()){
@@ -106,6 +108,8 @@ public class CartController {
         // Let's check if we already have a selection for that product
         HttpSession session = req.getSession(true);
         Integer userId =  (Integer) session.getAttribute("id");
+        if(userId == null)
+            return "redirect:/login";
         Cart userCart = cartService.getUserCart(userId);;
         for ( ProductSelection sel : userCart.getSelections()){
             if(sel.getProduct().getId() == productId){
