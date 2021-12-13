@@ -30,15 +30,8 @@ public class ProductService {
             return product.orElse(null);
         }
 
-        // should we make it return void ?
         public Product insert(Product product){
             return productRepository.save(product);
-            /*try {
-                productRepository.save(product);
-            }
-            catch(Exception e){
-                return false;
-            }*/
         }
 
         public Long count() {
@@ -60,8 +53,9 @@ public class ProductService {
             ArrayList<Product> filtered = new ArrayList<>();
 
             for(Product product : products){
-                // .equals because it could be null
-                if(product.getCategory() != null && Objects.equals(product.getCategory().getId(), cat)){
+                ArrayList<Integer> categories = product.getCategoriesId();
+
+                if(!categories.isEmpty() && categories.contains(cat)){
                     filtered.add(product);
                 }
             }
