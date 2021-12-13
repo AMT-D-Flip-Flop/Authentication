@@ -10,7 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+
+import static java.lang.Integer.parseInt;
 
 @Controller
 public class CartController {
@@ -30,13 +35,15 @@ public class CartController {
      * @return the cart page
      */
     @GetMapping("/cart")
-    public String displayCart(Model model) {
-        if(cartService.getAll().size() == 0){
-            Cart newcart = new Cart();
-            cartService.save(newcart);
+    public String displayCart(Model model, HttpServletRequest req) {
+        HttpSession session = req.getSession(true);
+        Integer userId =  (Integer) session.getAttribute("id");
+        Cart userCart = cartService.getUserCart(userId);
+        if(userCart == null){
+            userCart= new Cart(userId);
+            cartService.save(userCart);
         }
-        Cart cart = cartService.getAll().get(0);
-        model.addAttribute("cart", cart);
+        model.addAttribute("cart", userCart);
         return "cart";
     }
 
@@ -45,8 +52,10 @@ public class CartController {
      * @return the cart page
      */
     @GetMapping("/cart/empty")
-    public String emptyCart(Model model) {
-        Cart userCart = cartService.getAll().get(0);
+    public String emptyCart(Model model, HttpServletRequest req) {
+        HttpSession session = req.getSession(true);
+        Integer userId =  (Integer) session.getAttribute("id");
+        Cart userCart = cartService.getUserCart(userId);
         for ( ProductSelection sel : userCart.getSelections()){
             selectionService.delete(sel);
         }
@@ -62,9 +71,11 @@ public class CartController {
      * @throws IOException If fails to write the cart
      */
     @PostMapping(path="/cart")
-    public String saveCart (@ModelAttribute Cart cart) throws IOException {
+    public String saveCart (@ModelAttribute Cart cart, HttpServletRequest req) throws IOException {
 
-        Cart userCart = cartService.getAll().get(0);
+        HttpSession session = req.getSession(true);
+        Integer userId =  (Integer) session.getAttribute("id");
+        Cart userCart = cartService.getUserCart(userId);
         Integer index = 0;
         for (ProductSelection sel: userCart.getSelections()){
             if(cart.getSelections().get(index).getQuantity() == 0){
@@ -87,13 +98,15 @@ public class CartController {
      * @throws IOException
      */
     @PostMapping(path="/cart/add")
-    public String addProduct (Integer productId, Integer quantity) throws IOException {
+    public String addProduct (Integer productId, Integer quantity, HttpServletRequest req) throws IOException {
         // Sanity check
         if(quantity < 1)
             quantity = 1;
 
         // Let's check if we already have a selection for that product
-        Cart userCart = cartService.getAll().get(0);
+        HttpSession session = req.getSession(true);
+        Integer userId =  (Integer) session.getAttribute("id");
+        Cart userCart = cartService.getUserCart(userId);;
         for ( ProductSelection sel : userCart.getSelections()){
             if(sel.getProduct().getId() == productId){
                 sel.setQuantity(sel.getQuantity() + quantity);
@@ -117,8 +130,10 @@ public class CartController {
      * @throws IOException
      */
     @GetMapping(path="/cart/remove/{id}")
-    public String removeProduct (@PathVariable("id") Integer productId) throws IOException {
-        Cart userCart = cartService.getAll().get(0);
+    public String removeProduct (@PathVariable("id") Integer productId, HttpServletRequest req) throws IOException {
+        HttpSession session = req.getSession(true);
+        Integer userId =  (Integer) session.getAttribute("id");
+        Cart userCart = cartService.getUserCart(userId);
 
         for ( ProductSelection sel : userCart.getSelections()){
             if(sel.getProduct().getId() == productId){

@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.client.RestTemplate;
-import security.JwtProvider;
+import security.archive.JwtProvider;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -89,33 +89,39 @@ public class CustomUserDetailsService implements UserDetailsService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-
-       // String createPersonUrl = "http://localhost:3000/auth/login";
-        String createPersonUrl = serverAuthentication;
         RestTemplate restTemplate = new RestTemplate();
         UserJson user = new UserJson();
         user.setPassword(password);
         user.setUsername(username);
+
         // Data attached to the request.
         HttpEntity<UserJson> requestBody = new HttpEntity<>(user, headers);
 
         // Send request with POST method.
-        ResponseEntity<UserJson> result
-                = restTemplate.postForEntity(createPersonUrl, requestBody, UserJson.class);
+        ResponseEntity<UserJson> result = null;
+        try{
+            result = restTemplate.postForEntity(serverAuthentication, requestBody, UserJson.class);
+        }catch(Exception e){
+            return  new CustomUserDetails(null);
+        }
 
-        System.out.println("Status code:" + result.getStatusCode());
-        UserJson t = result.getBody();
-        // Code = 200.
+        UserJson userJsonResponse = result.getBody();
+
+        // Error
+        if(userJsonResponse.getError() != null){
+            throw new UsernameNotFoundException(userJsonResponse.getError());
+        }
         if (result.getStatusCode() == HttpStatus.OK) {
-            CustomUserDetails cs = new CustomUserDetails(t);
-            User u = new User();
-            u.setUsername(username);
-            u.setToken(t.getToken());
-            //authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-
-            // Optional.of(jwtProvider.createToken(username, user.get().getRoles()));
-            token = Optional.ofNullable(user.getToken());
+            CustomUserDetails cs = new CustomUserDetails(userJsonResponse);
             return cs;
+            /*User u = new User();
+            u.setUsername(username);
+            u.setToken(userJsonResponse.getToken());
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+
+             Optional.of(jwtProvider.createToken(username, user.get().getRoles()));
+
+             token = Optional.ofNullable(user.getToken());*/
         }else{
             throw new UsernameNotFoundException("User not found");
         }
