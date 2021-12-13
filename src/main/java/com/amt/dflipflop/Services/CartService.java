@@ -1,11 +1,13 @@
 package com.amt.dflipflop.Services;
 
 import com.amt.dflipflop.Entities.Cart;
+import com.amt.dflipflop.Entities.authentification.User;
 import com.amt.dflipflop.Repositories.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Optional;
 
 @Service
@@ -25,6 +27,18 @@ public class CartService {
         it.forEach(carts::add);
 
         return carts;
+    }
+
+    public Cart getUserCart(Integer userId) {
+
+        Iterable<Cart> it = cartRepository.findAll();
+
+        for (Iterator<Cart> i = it.iterator(); i.hasNext(); ){
+            Cart cart = i.next();
+            if(cart.getUserId() == userId)
+                return cart;
+        }
+        return null;
     }
 
     // This needs to be replaced to a User
