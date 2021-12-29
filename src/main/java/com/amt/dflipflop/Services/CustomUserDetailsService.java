@@ -1,7 +1,7 @@
 package com.amt.dflipflop.Services;
 
-import com.amt.dflipflop.Entities.CustomUserDetails;
-import com.amt.dflipflop.Entities.User;
+import com.amt.dflipflop.Entities.authentification.CustomUserDetails;
+import com.amt.dflipflop.Entities.authentification.User;
 import com.amt.dflipflop.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +15,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findByEmail(username);
+        User user = userRepo.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }

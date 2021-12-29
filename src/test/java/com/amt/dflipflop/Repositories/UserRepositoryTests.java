@@ -12,7 +12,7 @@ package com.amt.dflipflop.Repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.amt.dflipflop.Entities.User;
+import com.amt.dflipflop.Entities.authentification.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

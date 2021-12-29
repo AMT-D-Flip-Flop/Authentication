@@ -11,39 +11,23 @@
 
 package com.amt.dflipflop.Controllers;
 
-import com.amt.dflipflop.Entities.User;
+import com.amt.dflipflop.Entities.authentification.User;
+import com.amt.dflipflop.Entities.authentification.UserJson;
 import com.amt.dflipflop.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.Properties;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @Controller
 public class UserController {
-
-    @GetMapping("/user/orders")
-    public String getUserOrders(Model model) {
-        return "orders";
-    }
-
-    @GetMapping("/user/addresses")
-    public String getAddressesPage(Model model) {
-        return "addresses";
-    }
-
-    @GetMapping("/user/add-address")
-    public String getAddAddressPage(Model model) {
-        return "add-address";
-    }
-
-    @PostMapping(path="/user/add-address") // Map ONLY POST Requests
-    public @ResponseBody
-    String addNewAddress () {
-        return "add-address";
-    }
 
 
     @Autowired // This means to get the bean called userRepository
@@ -96,5 +80,26 @@ public class UserController {
         userRepository.save(user);
 
         return "register_success";
+    }
+
+    /*
+    https://www.it-swarm-fr.com/fr/java/spring-boot-automatic-json-object-controller/827515176/
+     */
+    @PostMapping("/accounts/register")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<UserJson> create(@RequestBody UserJson user)
+            throws URISyntaxException {
+        UserJson createdStudent = service.create(student);
+        if (createdStudent == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(createdStudent.getId())
+                    .toUri();
+
+            return ResponseEntity.created(uri)
+                    .body(createdStudent);
+        }
     }
 }
