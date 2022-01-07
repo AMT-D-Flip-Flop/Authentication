@@ -51,23 +51,26 @@ public class UserService implements UserDetailsService {
     /**
      * Sign in a user into the application, with JWT-enabled authentication
      *
-     * @param username  username
-     * @param password  password
      * @return Optional of the Java Web Token, empty otherwise
      */
-    public Optional<String> signin(String username, String password) {
+    public UserJson signin(UserJson user) {
         LOGGER.info("New user attempting to sign in");
+        UserJson response = new UserJson();
         Optional<String> token = Optional.empty();
-        Optional<User> user = userRepository.findByUsername(username);
-        if (user.isPresent()) {
+        Optional<User> userJpa = userRepository.findByUsername(user.getUsername());
+        if (userJpa.isPresent()) {
             try {
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-                token = Optional.of(jwtProvider.createToken(username, "test"));
+                response.setUsername(userJpa.get().getUsername());
+                //public Account(int id, String username, String role)
+                response.setAccount(new Account(userJpa.get().getId(), userJpa.get().getUsername(), userJpa.get().getRole()));
+                response.setUsername(userJpa.get().getRole());
+                token = Optional.of(jwtProvider.createToken(userJpa.get().getUsername(), "user"));
+                response.setToken(token.get());
             } catch (AuthenticationException e){
-                LOGGER.info("Log in failed for user {}", username);
+                LOGGER.info("Log in failed for user {}", user.getUsername());
             }
         }
-        return token;
+        return response;
     }
 
     /**

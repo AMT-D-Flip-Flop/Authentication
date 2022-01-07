@@ -89,11 +89,13 @@ public class JwtProvider{
      * Create JWT string given username and roles.
      *
      * @param username
-     * @param roles
+     * @param role
      * @return jwt string
      */
     public String createToken(String username, String role) {
         Claims claims = Jwts.claims().setSubject(username);
+        claims.put("role", role);
+        claims.setIssuer("DFLIPFLOP");
         /*claims.put(ROLES_KEY, roles.stream().map(role ->new SimpleGrantedAuthority(role.getAuthority()))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList()));*/
