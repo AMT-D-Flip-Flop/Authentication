@@ -3,12 +3,19 @@ package com.amt.dflipflop.Services;
 
 import com.amt.dflipflop.Entities.authentification.Role;
 import io.jsonwebtoken.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,14 +28,58 @@ import java.util.stream.Collectors;
  */
 @Component
 public class JwtProvider{
+    Logger logger = LoggerFactory.getLogger(JwtProvider.class);
+    //Define the key choice for jwt
+    //private String mode = "prod";
+    private String mode = "noProd";
+    private String jwtfileNamePath = "/opt/tomcat/webapps/zone_secret/jwt.txt";
+    //@Value("${authentication-test.auth.tokenSecret}")
+    private String tokenSecret = "secret";
 
     //Define the json string in jwt
     private final String ROLES_KEY = "role";
 
     private JwtParser parser;
 
-    private String secretKey = "secret";
     private long validityInMilliseconds;
+
+    private boolean keyGenerated;
+    private static String readLine(String filePath) throws IOException {
+        // File path is passed as parameter
+        File file = new File(
+                filePath);
+
+        // Note:  Double backquote is to avoid compiler
+        // interpret words
+        // like \test as \t (ie. as a escape sequence)
+
+        // Creating an object of BufferedReader class
+        BufferedReader br
+                = new BufferedReader(new FileReader(file));
+
+        // Declaring a string variable
+        String st = br.readLine();
+        // Consition holds true till
+        // there is character in a string
+
+        return st;
+    }
+    void generateKey() throws IOException {
+        //logger.error("key generate");
+        //logger.error("value:" + keyGenerated);
+        // logger.error("value:" + mode.equals("prod"));
+
+        if (!keyGenerated && mode.equals("prod")) {
+            logger.error("reade file");
+            tokenSecret = readLine(jwtfileNamePath);
+
+
+
+            keyGenerated = true;
+        }
+    }
+
+
 
 
    /* public JwtProvider(@Value("${security.jwt.token.secret-key}") String secretKey,
@@ -37,53 +88,16 @@ public class JwtProvider{
         this.secretKey = "test";
         this.validityInMilliseconds = validityInMilliseconds;
     }*/
+
     @Autowired
-   public JwtProvider() {
-
-        this.secretKey = "test";
-        this.validityInMilliseconds = 2;
+   public JwtProvider() throws IOException {
+        generateKey();
+        this.validityInMilliseconds = 86400000;//24h00
     }
 
 
-    /**
-     * Validate the JWT String
-     *
-     * @param token JWT string
-     * @return true if valid, false otherwise
-     */
-    public boolean isValidToken(String token) {
-        try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
-        }
-    }
 
-    /**
-     * Get the username from the token string
-     *
-     * @param token jwt
-     * @return username
-     */
-    public String getUsername(String token) {
-        return Jwts.parser().setSigningKey(secretKey)
-                .parseClaimsJws(token).getBody().getSubject();
-    }
 
-    /**
-     * Get the roles from the token string
-     *
-     * @param token jwt
-     * @return username
-     */
-    public List<GrantedAuthority> getRoles(String token) {
-        List<Map<String, String>>  roleClaims = Jwts.parser().setSigningKey(secretKey)
-                .parseClaimsJws(token).getBody().get(ROLES_KEY, List.class);
-        return roleClaims.stream().map(roleClaim ->
-                new SimpleGrantedAuthority(roleClaim.get("authority")))
-                .collect(Collectors.toList());
-    }
 
     /**
      * Create JWT string given username and roles.
@@ -92,7 +106,8 @@ public class JwtProvider{
      * @param role
      * @return jwt string
      */
-    public String createToken(String username, String role) {
+    public String createToken(String username, String role) throws IOException {
+
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("role", role);
         claims.setIssuer("DFLIPFLOP");
@@ -105,7 +120,7 @@ public class JwtProvider{
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expiresAt)
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(SignatureAlgorithm.HS256, tokenSecret.getBytes(Charset.forName("UTF-8")))
                 .compact();
     }
 

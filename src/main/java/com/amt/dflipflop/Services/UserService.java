@@ -1,8 +1,6 @@
 package com.amt.dflipflop.Services;
 
 
-
-
 import com.amt.dflipflop.Entities.authentification.*;
 import com.amt.dflipflop.Repositories.RoleRepository;
 import com.amt.dflipflop.Repositories.UserRepository;
@@ -18,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,7 +65,7 @@ public class UserService implements UserDetailsService {
                 response.setUsername(userJpa.get().getRole());
                 token = Optional.of(jwtProvider.createToken(userJpa.get().getUsername(), "user"));
                 response.setToken(token.get());
-            } catch (AuthenticationException e){
+            } catch (AuthenticationException | IOException e) {
                 LOGGER.info("Log in failed for user {}", user.getUsername());
             }
         }
@@ -84,7 +83,7 @@ public class UserService implements UserDetailsService {
         User userJpa = new User();
         UserJsonResponse response = new UserJsonResponse();
         if (!userRepository.findByUsername(user.getUsername()).isPresent()) {
-            try{
+            try {
                 //Optional<Role> role = roleRepository.findByRoleName("user");
                 BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
                 String encodedPassword = passwordEncoder.encode(user.getPassword());
@@ -94,16 +93,16 @@ public class UserService implements UserDetailsService {
                 response.setUsername(user.getUsername());
                 response.setRole("user");
                 userJpa = userRepository.save(userJpa);
-                response.setId(userJpa.getId()); ;
+                response.setId(userJpa.getId());
                 response.setRole(userJpa.getRole());
             /*user = Optional.of(userRepository.save(new User(user.getUsername(),
                     passwordEncoder.encode(user.getPassword()),
                     role.get())));*/
-            }catch(Exception e){
+            } catch (Exception e) {
                 response.setError("Error exception");
             }
 
-        }else{
+        } else {
             response.setError("The username already exist");
         }
         return response;
