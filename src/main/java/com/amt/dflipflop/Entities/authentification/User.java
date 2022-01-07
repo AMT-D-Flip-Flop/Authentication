@@ -21,38 +21,15 @@ public class User {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
 
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    private String role;
+
     private String username;
 
     private String email;
-
-    private String firstName;
-
-    private String lastName;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role", joinColumns
-            = @JoinColumn(name = "user_id",
-            referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id",
-                    referencedColumnName = "id"))
-    private List<Role> roles;
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
 
 
     public String getPassword() {
@@ -89,9 +66,11 @@ public class User {
         this.email = email;
     }
 
-    public List<Role> getRoles() {
-        return roles;
+    public String getRole() {
+        return role;
     }
+
+
 }
 
 

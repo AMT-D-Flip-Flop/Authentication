@@ -1,4 +1,4 @@
-package security;
+package com.amt.dflipflop.Services;
 
 
 import com.amt.dflipflop.Entities.authentification.Role;
@@ -30,12 +30,18 @@ public class JwtProvider{
     private String secretKey = "secret";
     private long validityInMilliseconds;
 
-    @Autowired
-    public JwtProvider(@Value("${security.jwt.token.secret-key}") String secretKey,
+
+   /* public JwtProvider(@Value("${security.jwt.token.secret-key}") String secretKey,
                        @Value("${security.jwt.token.expiration}")long validityInMilliseconds) {
 
-        this.secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+        this.secretKey = "test";
         this.validityInMilliseconds = validityInMilliseconds;
+    }*/
+    @Autowired
+   public JwtProvider() {
+
+        this.secretKey = "test";
+        this.validityInMilliseconds = 2;
     }
 
 
@@ -86,11 +92,11 @@ public class JwtProvider{
      * @param roles
      * @return jwt string
      */
-    public String createToken(String username, List<Role> roles) {
+    public String createToken(String username, String role) {
         Claims claims = Jwts.claims().setSubject(username);
-        claims.put(ROLES_KEY, roles.stream().map(role ->new SimpleGrantedAuthority(role.getAuthority()))
+        /*claims.put(ROLES_KEY, roles.stream().map(role ->new SimpleGrantedAuthority(role.getAuthority()))
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList()));*/
         Date now = new Date();
         Date expiresAt = new Date(now.getTime() + validityInMilliseconds);
         return Jwts.builder()

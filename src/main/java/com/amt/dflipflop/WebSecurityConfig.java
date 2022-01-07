@@ -17,6 +17,7 @@ import com.amt.dflipflop.Services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -81,6 +82,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll()
                     .usernameParameter("username")
                     .and()
+                .csrf().disable()
                 .logout()
                     .permitAll();
         /*http
@@ -105,4 +107,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //TODO: Change withDefaultPasswordEncoder
         return new InMemoryUserDetailsManager(user);
     }*/
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 }

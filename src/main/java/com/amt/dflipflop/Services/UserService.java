@@ -3,35 +3,31 @@ package com.amt.dflipflop.Services;
 
 
 
-import com.amt.dflipflop.Entities.authentification.Role;
-import com.amt.dflipflop.Entities.authentification.User;
+import com.amt.dflipflop.Entities.authentification.*;
 import com.amt.dflipflop.Repositories.RoleRepository;
 import com.amt.dflipflop.Repositories.UserRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import security.JwtProvider;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
+    @Autowired
     private UserRepository userRepository;
+
 
     private AuthenticationManager authenticationManager;
 
@@ -39,6 +35,7 @@ public class UserService {
 
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
     private JwtProvider jwtProvider;
 
     @Autowired
@@ -61,11 +58,11 @@ public class UserService {
     public Optional<String> signin(String username, String password) {
         LOGGER.info("New user attempting to sign in");
         Optional<String> token = Optional.empty();
-        Optional<User> user = Optional.ofNullable(userRepository.findByUsername(username));
+        Optional<User> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
             try {
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-                token = Optional.of(jwtProvider.createToken(username, user.get().getRoles()));
+                token = Optional.of(jwtProvider.createToken(username, "test"));
             } catch (AuthenticationException e){
                 LOGGER.info("Log in failed for user {}", username);
             }
@@ -76,27 +73,52 @@ public class UserService {
     /**
      * Create a new user in the database.
      *
-     * @param username username
-     * @param password password
-     * @param firstName first name
-     * @param lastName last name
      * @return Optional of user, empty if the user already exists.
      */
-    public Optional<User> signup(String username, String password, String firstName, String lastName) {
+    public UserJsonResponse signup(UserJson user) {
         LOGGER.info("New user attempting to sign in");
-        Optional<User> user = Optional.empty();
-        if (!userRepository.findByUsername(username).isPresent()) {
-            Optional<Role> role = roleRepository.findByRoleName("ROLE_CSR");
-            user = Optional.of(userRepository.save(new User(username,
-                    passwordEncoder.encode(password),
-                    role.get(),
-                    firstName,
-                    lastName)));
+        //Optional<User> user = Optional.empty();
+        User userJpa = new User();
+        UserJsonResponse response = new UserJsonResponse();
+        if (!userRepository.findByUsername(user.getUsername()).isPresent()) {
+            try{
+                //Optional<Role> role = roleRepository.findByRoleName("user");
+                BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+                String encodedPassword = passwordEncoder.encode(user.getPassword());
+                userJpa.setUsername(user.getUsername());
+                userJpa.setPassword(encodedPassword);
+                userJpa.setRole("user");
+                response.setUsername(user.getUsername());
+                response.setRole("user");
+                userJpa = userRepository.save(userJpa);
+                response.setId(userJpa.getId()); ;
+                response.setRole(userJpa.getRole());
+            /*user = Optional.of(userRepository.save(new User(user.getUsername(),
+                    passwordEncoder.encode(user.getPassword()),
+                    role.get())));*/
+            }catch(Exception e){
+                response.setError("Error exception");
+            }
+
+        }else{
+            response.setError("The username already exist");
         }
-        return user;
+        return response;
     }
 
     public List<User> getAll() {
-        return userRepository.findAll();
+        return (List<User>) userRepository.findAll();
+    }
+
+    @Autowired
+    private UserRepository userRepo;
+
+    @Override
+    public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepo.findByUsername(username).get();
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return new CustomUserDetails(new User());
     }
 }
