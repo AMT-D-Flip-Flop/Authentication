@@ -9,6 +9,7 @@ package com.amt.dflipflop.Entities.authentification;
  */
 
 import java.io.Serializable;
+import java.util.List;
 
 
 public class UserJsonResponse implements Serializable {
@@ -37,15 +38,15 @@ public class UserJsonResponse implements Serializable {
     //Create role
     private String role;
 
-    public String getError() {
-        return error;
+    public List<String> getErrors() {
+        return this.errors;
     }
 
-    public void setError(String error) {
-        this.error = error;
+    public void setErrors(List<String> errors) {
+        this.errors = errors;
     }
 
-    private String error;
+    private List<String> errors;
 
     public String getToken() {
         return token;

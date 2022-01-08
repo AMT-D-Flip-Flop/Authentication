@@ -67,6 +67,6 @@ https://www.it-swarm-fr.com/fr/java/spring-boot-automatic-json-object-controller
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UserJsonResponse> create(@RequestBody UserJson user) {
         UserJsonResponse createdUser = userService.signup(user);
-        return new ResponseEntity<UserJsonResponse>(createdUser, HttpStatus.OK);
+        return new ResponseEntity<UserJsonResponse>(createdUser, HttpStatus.CREATED);
     }
 }
