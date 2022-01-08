@@ -34,25 +34,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
-    @GetMapping("/login")
-    public String login(Model model) {
-        //model.addAttribute("name", name);
-        return "login";
-    }
-
-    @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new User());
-
-        return "register";
-    }
-
     /*
 https://www.it-swarm-fr.com/fr/java/spring-boot-automatic-json-object-controller/827515176/
   https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tutorial
  */
-    @PostMapping("/auth/login")
+    @PostMapping("/login")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UserJson> login(@RequestBody UserJson user) {
         UserJson userResponse = userService.signin(user);
@@ -63,7 +49,7 @@ https://www.it-swarm-fr.com/fr/java/spring-boot-automatic-json-object-controller
     https://www.it-swarm-fr.com/fr/java/spring-boot-automatic-json-object-controller/827515176/
       https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tutorial
      */
-    @PostMapping("/accounts/register")
+    @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UserJsonResponse> create(@RequestBody UserJson user) {
         UserJsonResponse createdUser = userService.signup(user);
