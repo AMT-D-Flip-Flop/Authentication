@@ -12,13 +12,13 @@ jobs:
       mysql:
         image: mysql:latest
         env:
-          MYSQL_DATABASE: db_flipflop
+          MYSQL_DATABASE: db_authentication
           MYSQL_HOST: 127.0.0.1
           MYSQL_USER: flipflop
           MYSQL_PASSWORD: FlipFlop1234
           MYSQL_ROOT_PASSWORD: root
         ports:
-          - 3307:3307
+          - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       #Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
