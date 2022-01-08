@@ -16,8 +16,6 @@ Source : https://www.codejava.net/frameworks/spring-boot/user-registration-and-l
  */
 
 import java.util.Collection;
-import java.util.Optional;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

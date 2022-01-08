@@ -88,7 +88,7 @@
                 <configuration>
                     <url>http://localhost:8081/manager/text</url>
                     <server>TomcatServer</server>
-                    <path>/</path>
+                    <path>/auth</path>
                 </configuration>
             </plugin>
         </plugins>
