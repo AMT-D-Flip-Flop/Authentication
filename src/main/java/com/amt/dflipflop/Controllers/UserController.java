@@ -11,20 +11,16 @@
 
 package com.amt.dflipflop.Controllers;
 
-import com.amt.dflipflop.Entities.authentification.User;
+
 import com.amt.dflipflop.Entities.authentification.UserJson;
 import com.amt.dflipflop.Entities.authentification.UserJsonResponse;
-import com.amt.dflipflop.Repositories.UserRepository;
 import com.amt.dflipflop.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URISyntaxException;
 
 @Controller
 public class UserController {
@@ -32,12 +28,20 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
+    @GetMapping("/")
+    @ResponseStatus(HttpStatus.OK)
+    public String index() {
+        return "index";
+    }
+
+
     /*
-https://www.it-swarm-fr.com/fr/java/spring-boot-automatic-json-object-controller/827515176/
-  https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tutorial
- */
+    https://www.it-swarm-fr.com/fr/java/spring-boot-automatic-json-object-controller/827515176/
+    https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tutorial
+     */
     @PostMapping("/login")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<UserJson> login(@RequestBody UserJson user) {
         UserJson userResponse = userService.signin(user);
         return new ResponseEntity<UserJson>(userResponse, HttpStatus.OK);
@@ -45,7 +49,7 @@ https://www.it-swarm-fr.com/fr/java/spring-boot-automatic-json-object-controller
 
     /*
     https://www.it-swarm-fr.com/fr/java/spring-boot-automatic-json-object-controller/827515176/
-      https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tutorial
+    https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tutorial
      */
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)

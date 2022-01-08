@@ -1,21 +1,19 @@
 /**
- * Date de création     : 16.10.2021
- * Dernier contributeur : Ryan Sauge
+ * Date de création     : janvier 2021
  * Groupe               : AMT-D-Flip-Flop
- * Description          : Tester la connexion avec tomcat
+ * Description          : DTO représentant un utilisateur issu de la BDD
  * Remarque             : -
  * Sources :
  * https://www.baeldung.com/spring-boot-testresttemplate
+ * https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tutorial
  */
 
 
 package com.amt.dflipflop.Entities.authentification;
 
-/*
-Source : https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tutorial
- */
 
 import java.util.Collection;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

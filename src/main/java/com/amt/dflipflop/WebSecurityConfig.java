@@ -6,13 +6,10 @@
  * Remarque             : -
  * Sources :
  * https://www.baeldung.com/spring-boot-testresttemplate
+ * https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tutorial
  */
 
 package com.amt.dflipflop;
-/*
-https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tutorial
- */
-
 
 import com.amt.dflipflop.Services.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;

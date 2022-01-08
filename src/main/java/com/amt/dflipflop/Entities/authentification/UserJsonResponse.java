@@ -2,7 +2,7 @@ package com.amt.dflipflop.Entities.authentification;
 
 
 /**
- * Date de création     : 06.12.2021
+ * Date de création     : janvier 2021
  * Dernier contributeur : Ryan Sauge
  * Groupe               : AMT-D-Flip-Flop
  * Description          : Serialiser la réponse du serveur d'authentification

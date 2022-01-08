@@ -1,8 +1,17 @@
+/**
+ * Date de création     : janvier 2021
+ * Groupe               : AMT-D-Flip-Flop
+ * Description          : Service pour les utilisateurs
+ * Remarque             : -
+ * Sources :
+ * -Mary Ellen Bowman - Linkedin
+ * -https://www.toptal.com/java/rest-security-with-jwt-spring-security-and-java
+ */
+
 package com.amt.dflipflop.Services;
 
 
 import com.amt.dflipflop.Entities.authentification.*;
-import com.amt.dflipflop.Repositories.RoleRepository;
 import com.amt.dflipflop.Repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +40,6 @@ public class UserService implements UserDetailsService {
 
     private AuthenticationManager authenticationManager;
 
-    private RoleRepository roleRepository;
 
     private PasswordEncoder passwordEncoder;
 
@@ -39,11 +47,9 @@ public class UserService implements UserDetailsService {
     private JwtProvider jwtProvider;
 
     @Autowired
-    public UserService(UserRepository userRepository, AuthenticationManager authenticationManager,
-                       RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtProvider jwtProvider) {
+    public UserService(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtProvider jwtProvider) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
-        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtProvider = jwtProvider;
     }
@@ -97,7 +103,6 @@ public class UserService implements UserDetailsService {
         }
         if(errors.size() == 0) {
             try {
-                //Optional<Role> role = roleRepository.findByRoleName("user");
                 BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
                 String encodedPassword = passwordEncoder.encode(user.getPassword());
                 userJpa.setUsername(user.getUsername());
@@ -116,9 +121,6 @@ public class UserService implements UserDetailsService {
         return response;
     }
 
-    public List<User> getAll() {
-        return (List<User>) userRepository.findAll();
-    }
 
     @Autowired
     private UserRepository userRepo;

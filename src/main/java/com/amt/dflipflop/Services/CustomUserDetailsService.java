@@ -1,3 +1,11 @@
+/**
+ * Date de création     : janvier 2021
+ * Groupe               : AMT-D-Flip-Flop
+ * Description          : Service pour un CustomUserDetail
+ * Remarque             : -
+ * Sources :
+ */
+
 package com.amt.dflipflop.Services;
 
 import com.amt.dflipflop.Entities.authentification.CustomUserDetails;
@@ -6,8 +14,6 @@ import com.amt.dflipflop.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import java.util.Optional;
 
 public class CustomUserDetailsService implements UserDetailsService {
 

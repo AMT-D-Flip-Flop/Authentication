@@ -1,3 +1,14 @@
+/**
+ * Date de création     : janvier 2021
+ * Groupe               : AMT-D-Flip-Flop
+ * Description          : Provider pour les JWT
+ * Remarque             : -
+ * Sources :
+ * -Mary Ellen Bowman - Linkedin
+ * -https://www.toptal.com/java/rest-security-with-jwt-spring-security-and-java
+ */
+
+
 package com.amt.dflipflop.Services;
 
 
@@ -14,19 +25,13 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
 
-/**
- * Utility Class for common Java Web Token operations
- * <p>
- * Created by Mary Ellen Bowman
- * <p>
- * Other sources : https://www.toptal.com/java/rest-security-with-jwt-spring-security-and-java
- */
+
 @Component
 public class JwtProvider {
     Logger logger = LoggerFactory.getLogger(JwtProvider.class);
     //Define the key choice for jwt
-    //private String mode = "prod";
-    private String mode = "noProd";
+    private String mode = "prod";
+    //private String mode = "noProd";
     private String jwtfileNamePath = "/opt/tomcat/webapps/zone_secret/jwt.txt";
     //@Value("${authentication-test.auth.tokenSecret}")
     private String tokenSecret = "secret";
@@ -34,7 +39,6 @@ public class JwtProvider {
     //Define the json string in jwt
     private final String ROLES_KEY = "role";
 
-    private JwtParser parser;
 
     private long validityInMilliseconds;
 
@@ -45,17 +49,11 @@ public class JwtProvider {
         File file = new File(
                 filePath);
 
-        // Note:  Double backquote is to avoid compiler
-        // interpret words
-        // like \test as \t (ie. as a escape sequence)
-
         // Creating an object of BufferedReader class
         BufferedReader br
                 = new BufferedReader(new FileReader(file));
-
-        // Declaring a string variable
-        String st = br.readLine();
-        return st;
+        // read line
+        return br.readLine();
     }
 
     void generateKey() throws IOException {
@@ -83,7 +81,7 @@ public class JwtProvider {
     public String createToken(String username, String role) throws IOException {
 
         Claims claims = Jwts.claims().setSubject(username);
-        claims.put("role", role);
+        claims.put(ROLES_KEY, role);
         claims.setIssuer("DFLIPFLOP");
         Date now = new Date();
         Date expiresAt = new Date(now.getTime() + validityInMilliseconds);
