@@ -16,8 +16,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -53,10 +55,12 @@ public class UserService implements UserDetailsService {
      */
     public UserJson signin(UserJson user) {
         LOGGER.info("New user attempting to sign in");
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         UserJson response = new UserJson();
         Optional<String> token = Optional.empty();
         Optional<User> userJpa = userRepository.findByUsername(user.getUsername());
-        if (userJpa.isPresent()) {
+        List<String> errors = new ArrayList<>();
+        if (userJpa.isPresent() && userJpa.get().getPassword() == passwordEncoder.encode(user.getPassword())) {
             try {
                 response.setUsername(userJpa.get().getUsername());
                 response.setAccount(new Account(userJpa.get().getId(), userJpa.get().getUsername(), userJpa.get().getRole()));
@@ -65,8 +69,13 @@ public class UserService implements UserDetailsService {
                 response.setToken(token.get());
             } catch (AuthenticationException | IOException e) {
                 LOGGER.info("Log in failed for user {}", user.getUsername());
+                errors.add("Invalid username or password");
             }
         }
+        else{
+            errors.add("Invalid username or password");
+        }
+        response.setErrors(errors);
         return response;
     }
 
@@ -79,7 +88,14 @@ public class UserService implements UserDetailsService {
         LOGGER.info("New user attempting to sign in");
         User userJpa = new User();
         UserJsonResponse response = new UserJsonResponse();
-        if (!userRepository.findByUsername(user.getUsername()).isPresent()) {
+        List<String> errors = new ArrayList<>();
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            errors.add("The username already exist");
+        }
+        if(!checkPasswordPolicy(user.getPassword())) {
+            errors.add("The password does not match the secutity politics, it should be at least 8 char long, containe at least one uppercase char, one lowercase char, one digit and one special character");
+        }
+        if(errors.size() == 0) {
             try {
                 //Optional<Role> role = roleRepository.findByRoleName("user");
                 BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -93,12 +109,10 @@ public class UserService implements UserDetailsService {
                 response.setId(userJpa.getId());
                 response.setRole(userJpa.getRole());
             } catch (Exception e) {
-                response.setError("Error exception");
+                errors.add("Error exception");
             }
-
-        } else {
-            response.setError("The username already exist");
         }
+        response.setErrors(errors);
         return response;
     }
 
@@ -116,5 +130,10 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
         return new CustomUserDetails(new User());
+    }
+
+    private Boolean checkPasswordPolicy(String password){
+        Pattern textPattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*(),.?\":{}|<>]).{8,}$");
+        return textPattern.matcher(password).matches();
     }
 }
