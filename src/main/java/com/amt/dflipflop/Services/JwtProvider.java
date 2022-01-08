@@ -25,8 +25,8 @@ import java.util.*;
 public class JwtProvider {
     Logger logger = LoggerFactory.getLogger(JwtProvider.class);
     //Define the key choice for jwt
-    //private String mode = "prod";
-    private String mode = "noProd";
+    private String mode = "prod";
+    //private String mode = "noProd";
     private String jwtfileNamePath = "/opt/tomcat/webapps/zone_secret/jwt.txt";
     //@Value("${authentication-test.auth.tokenSecret}")
     private String tokenSecret = "secret";
