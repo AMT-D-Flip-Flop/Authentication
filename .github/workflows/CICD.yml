@@ -18,7 +18,7 @@ jobs:
           MYSQL_PASSWORD: FlipFlop1234
           MYSQL_ROOT_PASSWORD: root
         ports:
-          - 3306:3306
+          - 3307:3307
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       #Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
@@ -83,7 +83,7 @@ jobs:
           #Set artifact name
           name: release
           #From this path
-          path: target/FlipFlop.war
+          path: target/Authentication.war
       #Deploy the app to Tomcat
       - name: Deploy with Maven
         run: mvn tomcat7:redeploy-only --file pom.xml
