@@ -1,3 +1,10 @@
+/**
+ * Date de création     : janvier 2022
+ * Groupe               : AMT-D-Flip-Flop
+ * Description          : Information about an user
+ * Remarque             : -
+ */
+
 package com.amt.dflipflop.Entities.authentification;
 
 import javax.persistence.Id;

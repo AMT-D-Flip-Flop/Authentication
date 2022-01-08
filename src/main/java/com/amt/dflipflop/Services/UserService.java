@@ -1,8 +1,17 @@
+/**
+ * Date de création     : janvier 2021
+ * Groupe               : AMT-D-Flip-Flop
+ * Description          : Service pour les utilisateurs
+ * Remarque             : -
+ * Sources :
+ * -Mary Ellen Bowman - Linkedin
+ * -https://www.toptal.com/java/rest-security-with-jwt-spring-security-and-java
+ */
+
 package com.amt.dflipflop.Services;
 
 
 import com.amt.dflipflop.Entities.authentification.*;
-import com.amt.dflipflop.Repositories.RoleRepository;
 import com.amt.dflipflop.Repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +40,6 @@ public class UserService implements UserDetailsService {
 
     private AuthenticationManager authenticationManager;
 
-    private RoleRepository roleRepository;
 
     private PasswordEncoder passwordEncoder;
 
@@ -39,11 +47,9 @@ public class UserService implements UserDetailsService {
     private JwtProvider jwtProvider;
 
     @Autowired
-    public UserService(UserRepository userRepository, AuthenticationManager authenticationManager,
-                       RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtProvider jwtProvider) {
+    public UserService(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, JwtProvider jwtProvider) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
-        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtProvider = jwtProvider;
     }
@@ -60,7 +66,7 @@ public class UserService implements UserDetailsService {
         Optional<String> token = Optional.empty();
         Optional<User> userJpa = userRepository.findByUsername(user.getUsername());
         List<String> errors = new ArrayList<>();
-        if (userJpa.isPresent() && userJpa.get().getPassword() == passwordEncoder.encode(user.getPassword())) {
+        if (userJpa.isPresent() && passwordEncoder.matches(user.getPassword(), userJpa.get().getPassword())) {
             try {
                 response.setUsername(userJpa.get().getUsername());
                 response.setAccount(new Account(userJpa.get().getId(), userJpa.get().getUsername(), userJpa.get().getRole()));
@@ -93,11 +99,10 @@ public class UserService implements UserDetailsService {
             errors.add("The username already exist");
         }
         if(!checkPasswordPolicy(user.getPassword())) {
-            errors.add("The password does not match the secutity politics, it should be at least 8 char long, containe at least one uppercase char, one lowercase char, one digit and one special character");
+            errors.add("The password does not match the security politics, it should be at least 8 char long, contain at least one uppercase char, one lowercase char, one digit and one special character");
         }
         if(errors.size() == 0) {
             try {
-                //Optional<Role> role = roleRepository.findByRoleName("user");
                 BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
                 String encodedPassword = passwordEncoder.encode(user.getPassword());
                 userJpa.setUsername(user.getUsername());
@@ -116,9 +121,6 @@ public class UserService implements UserDetailsService {
         return response;
     }
 
-    public List<User> getAll() {
-        return (List<User>) userRepository.findAll();
-    }
 
     @Autowired
     private UserRepository userRepo;
