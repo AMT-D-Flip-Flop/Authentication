@@ -66,7 +66,7 @@ public class UserService implements UserDetailsService {
         Optional<String> token = Optional.empty();
         Optional<User> userJpa = userRepository.findByUsername(user.getUsername());
         List<String> errors = new ArrayList<>();
-        if (userJpa.isPresent() && userJpa.get().getPassword() == passwordEncoder.encode(user.getPassword())) {
+        if (userJpa.isPresent() && passwordEncoder.matches(user.getPassword(), userJpa.get().getPassword())) {
             try {
                 response.setUsername(userJpa.get().getUsername());
                 response.setAccount(new Account(userJpa.get().getId(), userJpa.get().getUsername(), userJpa.get().getRole()));
@@ -99,7 +99,7 @@ public class UserService implements UserDetailsService {
             errors.add("The username already exist");
         }
         if(!checkPasswordPolicy(user.getPassword())) {
-            errors.add("The password does not match the secutity politics, it should be at least 8 char long, containe at least one uppercase char, one lowercase char, one digit and one special character");
+            errors.add("The password does not match the security politics, it should be at least 8 char long, contain at least one uppercase char, one lowercase char, one digit and one special character");
         }
         if(errors.size() == 0) {
             try {
