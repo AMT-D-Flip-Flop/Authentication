@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -60,7 +59,6 @@ public class UserService implements UserDetailsService {
         if (userJpa.isPresent()) {
             try {
                 response.setUsername(userJpa.get().getUsername());
-                //public Account(int id, String username, String role)
                 response.setAccount(new Account(userJpa.get().getId(), userJpa.get().getUsername(), userJpa.get().getRole()));
                 response.setUsername(userJpa.get().getRole());
                 token = Optional.of(jwtProvider.createToken(userJpa.get().getUsername(), "user"));
@@ -79,7 +77,6 @@ public class UserService implements UserDetailsService {
      */
     public UserJsonResponse signup(UserJson user) {
         LOGGER.info("New user attempting to sign in");
-        //Optional<User> user = Optional.empty();
         User userJpa = new User();
         UserJsonResponse response = new UserJsonResponse();
         if (!userRepository.findByUsername(user.getUsername()).isPresent()) {
@@ -95,9 +92,6 @@ public class UserService implements UserDetailsService {
                 userJpa = userRepository.save(userJpa);
                 response.setId(userJpa.getId());
                 response.setRole(userJpa.getRole());
-            /*user = Optional.of(userRepository.save(new User(user.getUsername(),
-                    passwordEncoder.encode(user.getPassword()),
-                    role.get())));*/
             } catch (Exception e) {
                 response.setError("Error exception");
             }

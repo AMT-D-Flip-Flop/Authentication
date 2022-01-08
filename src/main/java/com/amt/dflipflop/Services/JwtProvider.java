@@ -1,14 +1,10 @@
 package com.amt.dflipflop.Services;
 
 
-import com.amt.dflipflop.Entities.authentification.Role;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -17,17 +13,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Utility Class for common Java Web Token operations
- *
+ * <p>
  * Created by Mary Ellen Bowman
- *
+ * <p>
  * Other sources : https://www.toptal.com/java/rest-security-with-jwt-spring-security-and-java
  */
 @Component
-public class JwtProvider{
+public class JwtProvider {
     Logger logger = LoggerFactory.getLogger(JwtProvider.class);
     //Define the key choice for jwt
     //private String mode = "prod";
@@ -44,6 +39,7 @@ public class JwtProvider{
     private long validityInMilliseconds;
 
     private boolean keyGenerated;
+
     private static String readLine(String filePath) throws IOException {
         // File path is passed as parameter
         File file = new File(
@@ -59,44 +55,22 @@ public class JwtProvider{
 
         // Declaring a string variable
         String st = br.readLine();
-        // Consition holds true till
-        // there is character in a string
-
         return st;
     }
-    void generateKey() throws IOException {
-        //logger.error("key generate");
-        //logger.error("value:" + keyGenerated);
-        // logger.error("value:" + mode.equals("prod"));
 
+    void generateKey() throws IOException {
         if (!keyGenerated && mode.equals("prod")) {
             logger.error("reade file");
             tokenSecret = readLine(jwtfileNamePath);
-
-
-
             keyGenerated = true;
         }
     }
 
-
-
-
-   /* public JwtProvider(@Value("${security.jwt.token.secret-key}") String secretKey,
-                       @Value("${security.jwt.token.expiration}")long validityInMilliseconds) {
-
-        this.secretKey = "test";
-        this.validityInMilliseconds = validityInMilliseconds;
-    }*/
-
     @Autowired
-   public JwtProvider() throws IOException {
+    public JwtProvider() throws IOException {
         generateKey();
         this.validityInMilliseconds = 86400000;//24h00
     }
-
-
-
 
 
     /**
@@ -111,9 +85,6 @@ public class JwtProvider{
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("role", role);
         claims.setIssuer("DFLIPFLOP");
-        /*claims.put(ROLES_KEY, roles.stream().map(role ->new SimpleGrantedAuthority(role.getAuthority()))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList()));*/
         Date now = new Date();
         Date expiresAt = new Date(now.getTime() + validityInMilliseconds);
         return Jwts.builder()
