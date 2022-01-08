@@ -12,7 +12,7 @@ jobs:
       mysql:
         image: mysql:latest
         env:
-          MYSQL_DATABASE: db_flipflop
+          MYSQL_DATABASE: db_authentication
           MYSQL_HOST: 127.0.0.1
           MYSQL_USER: flipflop
           MYSQL_PASSWORD: FlipFlop1234
@@ -83,7 +83,7 @@ jobs:
           #Set artifact name
           name: release
           #From this path
-          path: target/FlipFlop.war
+          path: target/Authentication.war
       #Deploy the app to Tomcat
       - name: Deploy with Maven
         run: mvn tomcat7:redeploy-only --file pom.xml
