@@ -33,7 +33,7 @@ public class UserRepositoryTests {
     private UserRepository repo;
 
     // test methods go below
-    @Test
+    //@Test
     public void testCreateUser() {
         User user = new User();
         user.setEmail("ravikumar@gmail.com");
