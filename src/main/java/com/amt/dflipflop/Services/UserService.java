@@ -71,7 +71,7 @@ public class UserService implements UserDetailsService {
                 response.setUsername(userJpa.get().getUsername());
                 response.setAccount(new Account(userJpa.get().getId(), userJpa.get().getUsername(), userJpa.get().getRole()));
                 response.setUsername(userJpa.get().getRole());
-                token = Optional.of(jwtProvider.createToken(userJpa.get().getUsername(), "user"));
+                token = Optional.of(jwtProvider.createToken(userJpa.get().getUsername(), "ROLE_USER"));
                 response.setToken(token.get());
             } catch (AuthenticationException | IOException e) {
                 LOGGER.info("Log in failed for user {}", user.getUsername());
@@ -107,9 +107,9 @@ public class UserService implements UserDetailsService {
                 String encodedPassword = passwordEncoder.encode(user.getPassword());
                 userJpa.setUsername(user.getUsername());
                 userJpa.setPassword(encodedPassword);
-                userJpa.setRole("user");
+                userJpa.setRole("ROLE_USER");
                 response.setUsername(user.getUsername());
-                response.setRole("user");
+                response.setRole("ROLE_USER");
                 userJpa = userRepository.save(userJpa);
                 response.setId(userJpa.getId());
                 response.setRole(userJpa.getRole());
