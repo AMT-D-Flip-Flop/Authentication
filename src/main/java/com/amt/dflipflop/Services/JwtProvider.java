@@ -12,6 +12,7 @@
 package com.amt.dflipflop.Services;
 
 
+import com.amt.dflipflop.Constantes;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +31,6 @@ import java.util.*;
 public class JwtProvider {
     Logger logger = LoggerFactory.getLogger(JwtProvider.class);
     //Define the key choice for jwt
-    private String mode = "prod";
-    //private String mode = "noProd";
     private String jwtfileNamePath = "/opt/tomcat/webapps/zone_secret/jwt.txt";
     //@Value("${authentication-test.auth.tokenSecret}")
     private String tokenSecret = "secret";
@@ -57,7 +56,7 @@ public class JwtProvider {
     }
 
     void generateKey() throws IOException {
-        if (!keyGenerated && mode.equals("prod")) {
+        if (!keyGenerated && Constantes.mode.equals("prod")) {
             logger.error("reade file");
             tokenSecret = readLine(jwtfileNamePath);
             keyGenerated = true;
