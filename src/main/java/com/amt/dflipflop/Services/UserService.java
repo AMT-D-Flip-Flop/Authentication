@@ -68,10 +68,8 @@ public class UserService implements UserDetailsService {
         List<String> errors = new ArrayList<>();
         if (userJpa.isPresent() && passwordEncoder.matches(user.getPassword(), userJpa.get().getPassword())) {
             try {
-                response.setUsername(userJpa.get().getUsername());
                 response.setAccount(new Account(userJpa.get().getId(), userJpa.get().getUsername(), userJpa.get().getRole()));
-                response.setUsername(userJpa.get().getRole());
-                token = Optional.of(jwtProvider.createToken(userJpa.get().getUsername(), "ROLE_USER"));
+                token = Optional.of(jwtProvider.createToken(userJpa.get().getUsername(), userJpa.get().getRole()));
                 response.setToken(token.get());
             } catch (AuthenticationException | IOException e) {
                 LOGGER.info("Log in failed for user {}", user.getUsername());
