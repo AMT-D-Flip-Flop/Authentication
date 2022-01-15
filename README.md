@@ -1,6 +1,6 @@
-# DFlipFlop
+# Authentication
 
-DFlipFLop est une application e-commerce web qui offre à ses clients une large gamme de produits informatique.
+`Authentication` est un micro-service d'authentification
 
 ## Prérequis
 **Développement**
@@ -17,10 +17,25 @@ DFlipFLop est une application e-commerce web qui offre à ses clients une large 
     ``git clone https://github.com/AMT-D-Flip-Flop/AMT-projet``
 
 
-- Créer une base de données ainsi qu'un utilisateur avec les droits sur celle-ci
+- Créer une base de données `db_authentication` ainsi qu'un utilisateur avec les droits sur celle-ci
 
 
 - Modifier le fichier *src/main/application.properties* avec la base de données et les identifiants de l'utilisateur
+
+- Dans `com.amt.dflipflp` :
+
+
+  - Pour le mode production, décommenter :
+
+    ```java
+     public final static String mode = "prod";
+    ```
+
+  - Pour le mode local, décommenter :
+
+  ```java
+  public final static String mode = "noProd";
+  ```
 
 
 - Lancer le projet:
