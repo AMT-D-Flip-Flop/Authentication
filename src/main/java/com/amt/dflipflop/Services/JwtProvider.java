@@ -31,9 +31,9 @@ import java.util.*;
 public class JwtProvider {
     Logger logger = LoggerFactory.getLogger(JwtProvider.class);
     //Define the key choice for jwt
-    private String jwtfileNamePath = "/opt/tomcat/webapps/zone_secret/jwt.txt";
+
     //@Value("${authentication-test.auth.tokenSecret}")
-    private String tokenSecret = "secret";
+    private String tokenSecret = Constantes.tokenSecretDefault;
 
     //Define the json string in jwt
     private final String ROLES_KEY = "role";
@@ -58,7 +58,7 @@ public class JwtProvider {
     void generateKey() throws IOException {
         if (!keyGenerated && Constantes.mode.equals("prod")) {
             logger.error("reade file");
-            tokenSecret = readLine(jwtfileNamePath);
+            tokenSecret = readLine(Constantes.jwtfileNamePath);
             keyGenerated = true;
         }
     }
