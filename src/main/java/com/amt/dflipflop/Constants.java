@@ -7,7 +7,7 @@
 
 package com.amt.dflipflop;
 
-public final class Constantes {
+public final class Constants {
     //Decide if you are in prod or not
     public final static Boolean IS_PROD = true;
 

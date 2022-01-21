@@ -12,7 +12,7 @@
 package com.amt.dflipflop.Services;
 
 
-import com.amt.dflipflop.Constantes;
+import com.amt.dflipflop.Constants;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +32,7 @@ public class JwtProvider {
     Logger logger = LoggerFactory.getLogger(JwtProvider.class);
 
     //Define the key choice for jwt
-    private String tokenSecret = Constantes.tokenSecretDefault;
+    private String tokenSecret = Constants.tokenSecretDefault;
 
     //Define the json string in jwt
     private final String ROLES_KEY = "role";
@@ -57,9 +57,9 @@ public class JwtProvider {
     }
 
     void generateKey() throws IOException {
-        if (!keyGenerated && Constantes.IS_PROD) {
+        if (!keyGenerated && Constants.IS_PROD) {
             logger.error("reade file");
-            tokenSecret = readLine(Constantes.jwtfileNamePath);
+            tokenSecret = readLine(Constants.jwtfileNamePath);
             keyGenerated = true;
         }
     }
