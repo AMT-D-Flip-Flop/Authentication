@@ -43,6 +43,10 @@ public class UserService implements UserDetailsService {
 
     private PasswordEncoder passwordEncoder;
 
+    private String ROLE_USER = "ROLE_USER";
+
+    private String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*(),.?\":{}|<>]).{8,}$";
+
     @Autowired
     private JwtProvider jwtProvider;
 
@@ -105,9 +109,9 @@ public class UserService implements UserDetailsService {
                 String encodedPassword = passwordEncoder.encode(user.getPassword());
                 userJpa.setUsername(user.getUsername());
                 userJpa.setPassword(encodedPassword);
-                userJpa.setRole("ROLE_USER");
+                userJpa.setRole(ROLE_USER);
                 response.setUsername(user.getUsername());
-                response.setRole("ROLE_USER");
+                response.setRole(ROLE_USER);
                 userJpa = userRepository.save(userJpa);
                 response.setId(userJpa.getId());
                 response.setRole(userJpa.getRole());
@@ -133,7 +137,7 @@ public class UserService implements UserDetailsService {
     }
 
     private Boolean checkPasswordPolicy(String password){
-        Pattern textPattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*(),.?\":{}|<>]).{8,}$");
+        Pattern textPattern = Pattern.compile(PASSWORD_REGEX);
         return textPattern.matcher(password).matches();
     }
 }
