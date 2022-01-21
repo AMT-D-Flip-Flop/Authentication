@@ -12,6 +12,11 @@ import java.io.Serializable;
 
 public class Account implements Serializable {
 
+    private int id;
+    private String username;
+    private String role;
+
+
     public Account(){
 
     }
@@ -46,8 +51,5 @@ public class Account implements Serializable {
         this.role = role;
     }
 
-    private int id;
-    private String username;
-    private String role;
 
 }

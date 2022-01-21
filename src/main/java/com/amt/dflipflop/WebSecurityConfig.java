@@ -1,8 +1,7 @@
 /**
- * Date de création     : 16.10.2021
- * Dernier contributeur : Ryan Sauge
+ * Date de création     : Décembre 2021
  * Groupe               : AMT-D-Flip-Flop
- * Description          : Tester la connexion avec tomcat
+ * Description          : Configuration
  * Remarque             : -
  * Sources :
  * https://www.baeldung.com/spring-boot-testresttemplate

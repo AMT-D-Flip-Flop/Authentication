@@ -30,16 +30,17 @@ import java.util.*;
 @Component
 public class JwtProvider {
     Logger logger = LoggerFactory.getLogger(JwtProvider.class);
-    //Define the key choice for jwt
 
-    //@Value("${authentication-test.auth.tokenSecret}")
+    //Define the key choice for jwt
     private String tokenSecret = Constantes.tokenSecretDefault;
 
     //Define the json string in jwt
     private final String ROLES_KEY = "role";
+    private final String ISSUER = "DFLIPFLOP";
+    private final String CHARSET = "UTF-8";
 
 
-    private long validityInMilliseconds;
+    private final long validityInMilliseconds = 86400000; //24h00
 
     private boolean keyGenerated;
 
@@ -56,7 +57,7 @@ public class JwtProvider {
     }
 
     void generateKey() throws IOException {
-        if (!keyGenerated && Constantes.mode.equals("prod")) {
+        if (!keyGenerated && Constantes.IS_PROD) {
             logger.error("reade file");
             tokenSecret = readLine(Constantes.jwtfileNamePath);
             keyGenerated = true;
@@ -66,7 +67,6 @@ public class JwtProvider {
     @Autowired
     public JwtProvider() throws IOException {
         generateKey();
-        this.validityInMilliseconds = 86400000;//24h00
     }
 
 
@@ -81,14 +81,14 @@ public class JwtProvider {
 
         Claims claims = Jwts.claims().setSubject(username);
         claims.put(ROLES_KEY, role);
-        claims.setIssuer("DFLIPFLOP");
+        claims.setIssuer(ISSUER);
         Date now = new Date();
         Date expiresAt = new Date(now.getTime() + validityInMilliseconds);
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expiresAt)
-                .signWith(SignatureAlgorithm.HS256, tokenSecret.getBytes(Charset.forName("UTF-8")))
+                .signWith(SignatureAlgorithm.HS256, tokenSecret.getBytes(Charset.forName(CHARSET)))
                 .compact();
     }
 
