@@ -32,17 +32,15 @@
 
 - Dans `com.amt.dflipflp` :
 
-
     - Pour le mode production, mettre la variable  `IS_PROD` à true
 
   ```java
   public final static Boolean IS_PROD = true;
   ```
 
-
     - Pour le mode local, mettre la variable  `IS_PROD` à false
 
-      Conséquence : la clé secrète pour les jwt sera la valeur de la constante `tokenSecretDefault` (par défaut : `secret`)
+  Conséquence : la clé secrète pour les jwt sera la valeur de la constante `tokenSecretDefault` (par défaut : `secret`)
 
   ```java
 public final static Boolean IS_PROD = false;
@@ -51,7 +49,7 @@ public final static Boolean IS_PROD = false;
 
 - Lancer le projet:
 
-  ``./mvnw spring-boot:run``
+  `./mvnw spring-boot:run`
 
 ## Déployement
 
