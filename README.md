@@ -26,6 +26,7 @@
 
 
   - 1)  il faut créer un compte avec un appel à `/register`
+
   - 2) Modifier manuellement  dans la BDD la colonne `role`  pour l'utilisateur préalablement créer
 
     - Le rôle doit être `ROLE_ADMIN`
