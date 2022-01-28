@@ -12,7 +12,7 @@ public final class Constants {
     public final static Boolean IS_PROD = true;
 
     //File for prod or local use if you have the same path for file
-    public final static String jwtfileNamePath = "/opt/tomcat/webapps/zone_secret/jwt.txt";
+    public final static String jwtfileNamePath = "/opt/tomcat/zone_secret/jwt.txt";
     //Example for Windows
     //public final static String jwtfileNamePath = "C:\\amt\\jwt.txt";
 
