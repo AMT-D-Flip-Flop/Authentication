@@ -43,9 +43,11 @@
 
   Conséquence : la clé secrète pour les jwt sera la valeur de la constante `tokenSecretDefault` (par défaut : `secret`)
 
-  ```java
+```java
 public final static Boolean IS_PROD = false;
   ```
+
+
 
 
 - Lancer le projet:
