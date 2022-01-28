@@ -31,7 +31,7 @@
 
     - Le rôle doit être `ROLE_ADMIN`
 
-- Dans `com.amt.dflipflp` :
+- Dans `com/amt/dflipflop/Constants.java` :
 
     - Pour le mode production, mettre la variable  `IS_PROD` à true
 
