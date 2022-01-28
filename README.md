@@ -102,7 +102,7 @@ Caused by: java.io.FileNotFoundException: \opt\tomcat\webapps\zone_secret\jwt.tx
 
 - J'aimerais tester mon application en local. Ais-je besoin de configurer une clé secrète pour signer les jwt?
 
-> Non. Dans, src\main\java\com\amt\dflipflop, vous pouvez mettre la valeur de la constante IS_PROD à false. Cela aura pour conséquence d'utiliser "secret" comme clé pour signer les jwt. Attention néanmoins à remette IS_PROD à true quand vous serez en production.
+> Non. Dans, src\main\java\com\amt\dflipflop, vous pouvez mettre la valeur de la constante IS_PROD à false. Cela aura pour conséquence d'utiliser "secret" comme clé pour signer les jwt. Attention néanmoins à remettre IS_PROD à true quand vous serez en production.
 
 - J'ai crée un utilisateur, je peux me connecter mais je n'arrive pas à accéder aux zones réservées aux admin dans mon application. D'où vient le problème ?
 
