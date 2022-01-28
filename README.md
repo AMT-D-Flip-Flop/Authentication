@@ -22,25 +22,37 @@
 
 - Modifier le fichier *src/main/application.properties* avec la base de données et les identifiants de l'utilisateur
 
+- Pour avoir un administrateur :
+
+
+  - 1)  il faut créer un compte avec un appel à `/register`
+
+  - 2) Modifier manuellement  dans la BDD la colonne `role`  pour l'utilisateur préalablement créer
+
+    - Le rôle doit être `ROLE_ADMIN`
+
 - Dans `com.amt.dflipflp` :
 
-
-  - Pour le mode production, décommenter :
-
-    ```java
-     public final static String mode = "prod";
-    ```
-
-  - Pour le mode local, décommenter :
+    - Pour le mode production, mettre la variable  `IS_PROD` à true
 
   ```java
-  public final static String mode = "noProd";
+  public final static Boolean IS_PROD = true;
   ```
+
+    - Pour le mode local, mettre la variable  `IS_PROD` à false
+
+  Conséquence : la clé secrète pour les jwt sera la valeur de la constante `tokenSecretDefault` (par défaut : `secret`)
+
+```java
+public final static Boolean IS_PROD = false;
+  ```
+
+
 
 
 - Lancer le projet:
 
-  ``./mvnw spring-boot:run``
+  `./mvnw spring-boot:run`
 
 ## Déployement
 
@@ -68,7 +80,28 @@ Démarrez le deployment:
  ./mvnw tomcat7:deploy
 ``
 
+## FAQ
+
+- Lorsque je lance le micro service, j'ai les erreurs suivantes : `BeanInstantiationException: Failed to instantiate, nested exception is java.io.FileNotFoundException: `
+
+*Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.amt.dflipflop.Services.JwtProvider]: Constructor threw exception; nested exception is java.io.FileNotFoundException: \opt\tomcat\webapps\zone_secret\jwt.txt (Le chemin d’accès spécifié est introuvable)
+[...]
+Caused by: java.io.FileNotFoundException: \opt\tomcat\webapps\zone_secret\jwt.txt (Le chemin d’accès spécifié est introuvable)*
+
+> Piste : Dans src\main\java\com\amt\dflipflop, avez-vous bien configuré correctement le fichier Constants ? Dans celui-ci, une variable IS_PROD permet d'indiquer si il faut utiliser le chemin spécifié par la constante jwtfileNamePath se trouvant dans le même fichier.
+
+- J'aimerais tester mon application en local. Ais-je besoin de configurer une clé secrète pour signer les jwt?
+
+> Non. Dans, src\main\java\com\amt\dflipflop, vous pouvez mettre la valeur de la constante IS_PROD à false. Cela aura pour conséquence d'utiliser "secret" comme clé pour signer les jwt. Attention néanmoins à remette IS_PROD à true quand vous serez en production.
+
+- J'ai crée un utilisateur, je peux me connecter mais je n'arrive pas à accéder aux zones réservées aux admin dans mon application. D'où vient le problème ?
+
+> Piste  : Avez-bien mis le rôle de votre utilisateur admin en ROLE_ADMIN dans votre base de donnée ?
+
+
+
 ## Contribuer
+
 Rendez vous sur la partie [collaboration](https://github.com/AMT-D-Flip-Flop/AMT-projet/wiki/Collaboration) du wiki pour vous renseigner sur le workflow pour contribuer au projet.
 
 N'oubliez pas de créer des tests en fonction des nouvelles fonctionnalités ajoutées.
