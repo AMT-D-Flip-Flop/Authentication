@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="iso-8859-15" standalone="no"?>
+<classDiagram>
+  <diagramElements defaultViewEntities="ALL" defaultViewEnum="true" defaultViewMethods="TYPE_AND_NAME" defaultVisibleTypes="true" informations="" name="Entities">
+    <entity entityType="CLASS" id="2" isAbstract="false" name="User" visibility="PUBLIC">
+      <attribute const="false" defaultValue="" isStatic="false" name="id" type="int" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="email" type="varchar(255)" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="password" type="varchar(255)" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="role" type="varchar(255)" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="username" type="varchar(255)" visibility="PRIVATE"/>
+    </entity>
+  </diagramElements>
+  <umlView grid="10" name="Main view" open="true">
+    <componentView color="-2079" componentID="2" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>50</x>
+        <y>150</y>
+        <w>240</w>
+        <h>130</h>
+      </geometry>
+    </componentView>
+  </umlView>
+  <umlView grid="10" name="jwtToken" open="false">
+    <componentView color="-2079" componentID="2" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>1100</x>
+        <y>100</y>
+        <w>230</w>
+        <h>145</h>
+      </geometry>
+    </componentView>
+  </umlView>
+  <umlView grid="10" name="uml2" open="false"/>
+</classDiagram>

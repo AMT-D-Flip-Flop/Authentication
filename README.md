@@ -27,9 +27,9 @@
 
   - 1)  il faut créer un compte avec un appel à `/register`
 
-  - 2) Modifier manuellement  dans la BDD la colonne `role`  pour l'utilisateur préalablement créer
+  - 2) Modifier manuellement  dans la BDD la colonne `role`  pour l'utilisateur préalablement crée.
 
-    - Le rôle doit être `ROLE_ADMIN`
+    - Le rôle doit être `ROLE_ADMIN` si c'est pour fonctionner avec l'application principal de notre organisation `AMT-projet`
 
 - Dans `com.amt.dflipflp` :
 
@@ -45,14 +45,22 @@
 
 ```java
 public final static Boolean IS_PROD = false;
-  ```
-
-
-
+```
 
 - Lancer le projet:
 
-  `./mvnw spring-boot:run`
+
+`./mvnw spring-boot:run`
+
+- Une fois lancée, les routes locales définies sont les suivantes :
+  - [http://localhost:8081/login](http://localhost:8081/login)
+  - [http://localhost:8081/register](http://localhost:8081/register)
+
+## Utilisation
+
+Lorsque vous créez un utilisateur en réalisant une requête à `/register`, le rôle par défaut attribué à votre utilisateur est `ROLE_USER`.
+
+
 
 ## Déployement
 
@@ -79,6 +87,8 @@ Démarrez le deployment:
 ``
  ./mvnw tomcat7:deploy
 ``
+
+
 
 ## FAQ
 
